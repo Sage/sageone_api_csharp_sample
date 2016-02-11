@@ -1,0 +1,108 @@
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.dll.config
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.pdb
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Antlr3.Runtime.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\AspNet.ScriptManager.bootstrap.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\AspNet.ScriptManager.jQuery.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.SqlServer.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.ScriptManager.MSAjax.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.ScriptManager.WebForms.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Web.Infrastructure.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Newtonsoft.Json.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Owin.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Optimization.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Providers.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\WebGrease.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Optimization.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Antlr3.Runtime.pdb
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Newtonsoft.Json.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.SqlServer.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Providers.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.xml
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.csprojResolveAssemblyReference.cache
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.pdb
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Sage One Authorisation Client.dll
+\\vmware-host\shared folders\documents\visual studio 2013\Projects\Sage One API Samples\Sage One API Sample Website\bin\Sage One Authorisation Client.pdb
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.dll.config
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Sage One API Sample Website.pdb
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Antlr3.Runtime.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\AspNet.ScriptManager.bootstrap.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\AspNet.ScriptManager.jQuery.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.SqlServer.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.ScriptManager.MSAjax.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.ScriptManager.WebForms.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Web.Infrastructure.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Owin.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Sage One Authorisation Client.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Optimization.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Providers.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\WebGrease.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Newtonsoft.Json.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Sage One Authorisation Client.pdb
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Optimization.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Antlr3.Runtime.pdb
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\EntityFramework.SqlServer.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\System.Web.Providers.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\bin\Newtonsoft.Json.xml
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.csprojResolveAssemblyReference.cache
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.dll
+\\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.pdb
