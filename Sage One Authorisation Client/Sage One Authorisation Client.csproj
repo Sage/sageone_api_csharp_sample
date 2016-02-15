@@ -51,6 +51,7 @@
     <Compile Include="Contact Helper\ContactManager.cs" />
     <Compile Include="Contact Helper\ContactType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SageOneAPIRequestSigner.cs" />
     <Compile Include="SageOneOAuth.cs" />
     <Compile Include="SageOneWebRequest.cs" />
   </ItemGroup>

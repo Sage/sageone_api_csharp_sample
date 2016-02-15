@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Sage_One_Authorisation_Client
 {
@@ -41,11 +42,19 @@ namespace Sage_One_Authorisation_Client
             }
         }
 
-        public string AccessTokenPostData
+        //public string AccessTokenPostData
+        public List<KeyValuePair<string, string>> AccessTokenPostData
         { 
             get
             {
-                return string.Format("client_id={0}&client_secret={1}&code={2}&grant_type=authorization_code&redirect_uri={3}", this.ClientID, this.ClientSecret, _code, HttpUtility.UrlEncode(CALLBACK_URL));
+                List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
+              new KeyValuePair<string,string>("client_id", this.ClientID),
+              new KeyValuePair<string,string>("client_secret",this.ClientSecret),
+              new KeyValuePair<string,string>("code", _code),
+              new KeyValuePair<string,string>("grant_type", "authorization_code"),
+              new KeyValuePair<string,string>("redirect_uri",HttpUtility.UrlEncode(CALLBACK_URL))
+             };
+             return postData;
             }
         }
 
@@ -94,11 +103,11 @@ namespace Sage_One_Authorisation_Client
         public void GetAccessToken( string code )
         {
             SageOneWebRequest request = new SageOneWebRequest();
-
             _code = code;
-
-            string postData = AccessTokenPostData;
-            string response = request.PostData(AccessTokenURL, postData, "", "");
+            
+            List<KeyValuePair<string, string>> postData = AccessTokenPostData;
+            Uri accesstokenURI = new Uri(AccessTokenURL);
+            string response = request.PostData(accesstokenURI, postData, "", "");
             
             if (response.Length > 0)
             {
