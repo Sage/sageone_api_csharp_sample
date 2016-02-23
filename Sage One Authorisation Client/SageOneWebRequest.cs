@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Linq;
 using System.Web;
-
 using System.Security.Cryptography;
 
 namespace Sage_One_Authorisation_Client
@@ -14,40 +14,45 @@ namespace Sage_One_Authorisation_Client
     {
         public enum Method { GET, POST, PUT, DELETE };
 
-        public string GetData( string baseurl, string parameters, string token, string secret )
+        public string GetData( Uri url, string token, string signingSecret )
         {
-            string nonce = GenerateNonce();
-            string url = "";
-
-            HttpWebRequest webRequest = null;
-        
-            if (parameters == "")
-                url = baseurl;
-            else
-                url = baseurl + "?" + parameters;
-
-            webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
-
-            string signingKey = GenerateSigningKey("GET", baseurl, parameters, secret, token, nonce);
+            // Create the nonce to be used by the request
+            string nonce = GenerateNonce();      
             
-            SetHeaders(Method.GET, webRequest, token, signingKey, nonce );
+            // Create the web request            
+            HttpWebRequest webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
 
+            // Generate a signature
+            string signature = SageOneAPIRequestSigner.GenerateSignature("GET", url, null, signingSecret, token, nonce);
+            
+            // Set the request headers
+            SetHeaders(Method.GET, webRequest, token, signature, nonce );
 
+            // Send the GET request
             return GetRequest(webRequest);
         }
 
-        public string PostData(string url, string postData, string token, string secret)
+        public string PostData(Uri url, List<KeyValuePair<string, string>> requestBody, string token, string signingSecret)
         {
-
             try
             {
+                // Create the nonce to be used by the request
                 string nonce = GenerateNonce();
-                HttpWebRequest webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
-                string signature = GenerateSigningKey("POST", url, postData, secret, token, nonce);
 
+                // Create the web request 
+                HttpWebRequest webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
+
+                // Generate a signature
+                string signature = SageOneAPIRequestSigner.GenerateSignature("POST", url, requestBody, signingSecret, token, nonce);
+
+                // Set the request headers
                 SetHeaders(Method.POST, webRequest, token, signature, nonce);
 
-                return SendRequest(webRequest, postData);
+                // Convert the requestBody into post parameters 
+                string postParams = ConvertPostParams(requestBody);
+
+                // Send the POST request
+                return SendRequest(webRequest, postParams);
             }
             catch (Exception ex)
             {
@@ -57,58 +62,65 @@ namespace Sage_One_Authorisation_Client
 
        
 
-        public string PutData(string url, string putData, string token, string secret )
+        public string PutData(Uri url, List<KeyValuePair<string, string>> requestBody, string token, string signingSecret )
         {
+            // Create the nonce to be used by the request
             string nonce = GenerateNonce();
 
-            HttpWebRequest webRequest = null;
-            webRequest = System.Net.WebRequest.Create( url ) as HttpWebRequest;
+            // Create the web request 
+            HttpWebRequest webRequest = System.Net.WebRequest.Create( url ) as HttpWebRequest;
 
-            string signingKey = GenerateSigningKey("PUT", url, putData, secret, token, nonce);
+            // Generate a signature
+            string signature = SageOneAPIRequestSigner.GenerateSignature("PUT", url, requestBody, signingSecret, token, nonce);
 
-            SetHeaders(Method.PUT, webRequest, token,signingKey,nonce);
+            // Set the request headers
+            SetHeaders(Method.PUT, webRequest, token, signature, nonce);
 
-            return SendRequest(webRequest, putData);
+            // Convert the requestBody into put parameters
+            string putParams = ConvertPostParams(requestBody);
+
+            // Send the PUT request
+            return SendRequest(webRequest, putParams);
         }
 
-        public string DeleteData( string baseurl, string parameters, string token, string secret)
+        public string DeleteData( Uri baseurl, string token, string signingSecret)
         {
-            string url = "";
+            // Create the nonce to be used by the request
             string nonce = GenerateNonce();
 
-            HttpWebRequest webRequest = null;
+            // Create the web request 
+            HttpWebRequest webRequest = System.Net.WebRequest.Create(baseurl) as HttpWebRequest;
 
-            if (parameters == "")
-                url = baseurl;
-            else
-                url = baseurl + "?" + parameters;
+            // Generate a signature
+            string signature = SageOneAPIRequestSigner.GenerateSignature("DELETE", baseurl, null, signingSecret, token, nonce);
 
-            webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
+            // Set the request headers
+            SetHeaders(Method.DELETE, webRequest, token, signature, nonce);
 
-            string signingKey = GenerateSigningKey("DELETE", baseurl, parameters, secret, token, nonce);
-            
-            SetHeaders(Method.DELETE, webRequest, token,signingKey,nonce);
-
+            // Send the DELETE request
             return GetRequest(webRequest);
         }
 
         
-        private void SetHeaders ( Method method, HttpWebRequest webRequest, string accessToken,string signingKey, string nonce )
+        private void SetHeaders ( Method method, HttpWebRequest webRequest, string accessToken,string signature, string nonce )
         {
+            // Set the required header values on the web request
             webRequest.AllowAutoRedirect = true;
             webRequest.Accept = "*/*";
-            webRequest.UserAgent = "Challis Test";
-            webRequest.Headers.Add("X-Signature", signingKey);
+            webRequest.UserAgent = "CSharp Test";
+            webRequest.Headers.Add("X-Signature", signature);
             webRequest.Headers.Add("X-Nonce", nonce);
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Timeout = 100000;
 
+            // pass the current access token as a header parameter
             if (accessToken != "")
             {
                 string authorization = String.Concat("Bearer ", accessToken);
                 webRequest.Headers.Add("Authorization", authorization);
             }
             
+            // Set the request method verb
             switch ( method )
             {
                 case Method.GET: 
@@ -132,23 +144,16 @@ namespace Sage_One_Authorisation_Client
         }
 
         private string GetRequest( HttpWebRequest webRequest)
-        {
-            
+        {            
             string responseData = "";
-
             responseData = GetWebResponse( webRequest );
-
-            webRequest = null;
-            
+            webRequest = null;            
             return responseData;
         }
 
         private string SendRequest( HttpWebRequest webRequest, string postData )
-        {                
-           
-           
+        {              
             StreamWriter requestWriter = null;
-
             requestWriter = new StreamWriter(webRequest.GetRequestStream());
             
             try
@@ -164,7 +169,6 @@ namespace Sage_One_Authorisation_Client
                 requestWriter.Close();
                 requestWriter = null;
             }
-
             return GetRequest(webRequest);
         }
 
@@ -206,66 +210,27 @@ namespace Sage_One_Authorisation_Client
             return responseData;
         }
 
-        public string GenerateSigningKey( string verb ,string url, string parameters, string secret, string token, string nonce)
-        {
-
-            string basesignaturestring = verb + "&" + PercentEncodeRfc3986(url) + "&" + PercentEncodeRfc3986(parameters) + "&" + PercentEncodeRfc3986(nonce);
-
-            secret = PercentEncodeRfc3986(secret);
-            token = PercentEncodeRfc3986(token);
-
-            string signingkey = secret + "&" + token;
-
-            string OAuthSignature = CreateOAuthSignature(signingkey, basesignaturestring);
-
-            return OAuthSignature;
-        }
-
-        public string PercentEncodeRfc3986(string value)
-        {
-            // Start with RFC 2396 escaping by calling the .NET method to do the work.
-            // This MAY sometimes exhibit RFC 3986 behavior (according to the documentation).
-            // If it does, the escaping we do that follows it will be a no-op since the
-            // characters we search for to replace can't possibly exist in the string.
-            StringBuilder escaped = new StringBuilder(Uri.EscapeDataString(value));
-
-            string[] UriRfc3986CharsToEscape = new[] { "!", "*", "'", "(", ")" };
-
-            // Upgrade the escaping to RFC 3986, if necessary.
-            for (int i = 0; i < UriRfc3986CharsToEscape.Length; i++)
-            {
-                escaped.Replace(UriRfc3986CharsToEscape[i], Uri.HexEscape(UriRfc3986CharsToEscape[i][0]));
-            }
-
-            // Return the fully-RFC3986-escaped string.
-            return escaped.ToString();
-        }
-        
+              
         public string GenerateNonce()
         {
             RandomNumberGenerator rng = RNGCryptoServiceProvider.Create();
-
             Byte[] output = new Byte[32];
-
             rng.GetBytes(output);
-
-           return Convert.ToBase64String(output);       
+            return Convert.ToBase64String(output);       
         }
-
-        private string CreateOAuthSignature(string signingkey, string basesignaturestring)
+       
+        private string ConvertPostParams(List<KeyValuePair<string, string>> requestBody)
         {
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] hashmessage;
+            IEnumerable<KeyValuePair<string, string>> kvpParams = requestBody;
+            // Sort the parameters
+            IEnumerable<string> sortedParams =
+              from p in requestBody              
+              select p.Key + "=" + p.Value;
 
-            byte[] keyByte = encoding.GetBytes(signingkey);
-            byte[] signatureBytes = encoding.GetBytes(basesignaturestring);
-            
-            using (HMACSHA1 hmacsha1 = new HMACSHA1(keyByte))
-            {
-                hashmessage = hmacsha1.ComputeHash(signatureBytes);
-            }
+            // Add the ampersand delimiter and then URL-encode
+            string encodedParams = String.Join("&", sortedParams);            
+            return encodedParams;
 
-            return Convert.ToBase64String(hashmessage);
         }
     }
 }

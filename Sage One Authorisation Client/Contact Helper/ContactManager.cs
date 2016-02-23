@@ -11,24 +11,28 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
     {
         private SageOneOAuth oauth = new SageOneOAuth();
 
-        private string baseURL = "https://api.sageone.com/accounts/v1/contacts/";
+        private Uri contactUri = new Uri("https://api.sageone.com/accounts/v1/contacts/");
         
         public ContactGetHeader GetContacts(string token)
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string JSON = webRequest.GetData(baseURL, "", token, oauth.SigningSecret);
+            string JSON = webRequest.GetData(contactUri, token, oauth.SigningSecret);
 
             ContactGetHeader contact = JsonConvert.DeserializeObject<ContactGetHeader>(JSON);
 
             return contact;
         }
-        
+
         public ContactGetHeader GetContacts(string token, string emailAddress)
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string JSON = webRequest.GetData(baseURL, webRequest.PercentEncodeRfc3986("email") + "=" + webRequest.PercentEncodeRfc3986(emailAddress), token, oauth.SigningSecret);
+            UriBuilder uriWithParameters = new UriBuilder(contactUri.AbsoluteUri);
+
+            uriWithParameters.Query = "email=" + emailAddress;
+
+            string JSON = webRequest.GetData(uriWithParameters.Uri, token, oauth.SigningSecret);
 
             ContactGetHeader contact = JsonConvert.DeserializeObject<ContactGetHeader>(JSON);
 
@@ -39,43 +43,45 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string JSON = webRequest.GetData(baseURL, webRequest.PercentEncodeRfc3986("$itemsPerPage") + "=" + webRequest.PercentEncodeRfc3986(page), token, oauth.SigningSecret);
+            UriBuilder uriWithParameters = new UriBuilder(contactUri.AbsoluteUri);
+
+            uriWithParameters.Query = "$itemsPerPage=" + page;
+
+            string JSON = webRequest.GetData(uriWithParameters.Uri, token, oauth.SigningSecret);
 
             ContactGetHeader contact = JsonConvert.DeserializeObject<ContactGetHeader>(JSON);
 
             return contact;
         }
-        
+
         public ContactToGet GetContact(string id, string token)
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string url = baseURL + "/" + id;
+            Uri specificContactUri = new Uri(contactUri.AbsoluteUri + "/" + id);
 
-            string JSON = webRequest.GetData(url, "", token, oauth.SigningSecret);
+            string JSON = webRequest.GetData(specificContactUri, token, oauth.SigningSecret);
 
-            ContactToGet contact = JsonConvert.DeserializeObject<ContactToGet>( JSON );
+            ContactToGet contact = JsonConvert.DeserializeObject<ContactToGet>(JSON);
 
             return contact;
         }
 
-        public string CreateContact( string name, string companyName, string email, string telephone, int contactTypeID, string token)
+        public string CreateContact(string name, string companyName, string email, string telephone, int contactTypeID, string token)
         {
 
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string formattedName = webRequest.PercentEncodeRfc3986("contact[name]") + "=" + webRequest.PercentEncodeRfc3986(name);
-            string formattedCompanyName = webRequest.PercentEncodeRfc3986("contact[company_name]") + "=" + webRequest.PercentEncodeRfc3986(companyName);
-            string formattedEmail = webRequest.PercentEncodeRfc3986("contact[email]") + "=" + webRequest.PercentEncodeRfc3986(email);
-            string formattedTelephone = webRequest.PercentEncodeRfc3986("contact[telephone]") + "=" + webRequest.PercentEncodeRfc3986(telephone);
-            string formattedContactTypeID = webRequest.PercentEncodeRfc3986("contact[contact_type_id]") + "=" + webRequest.PercentEncodeRfc3986(Convert.ToString("1"));
-            string postData = formattedCompanyName + "&" + formattedContactTypeID + "&" + formattedEmail + "&" + formattedName  + "&" + formattedTelephone;
+            List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
+              new KeyValuePair<string,string>("contact[name]", name),
+              new KeyValuePair<string,string>("contact[email]",email),
+              new KeyValuePair<string,string>("contact[contact_type_id]",contactTypeID.ToString()),
+              new KeyValuePair<string,string>("contact[telephone]",telephone),
+              new KeyValuePair<string,string>("contact[company_name]",companyName) };
 
-            string nonce = Guid.NewGuid().ToString("N");        
+            string _return = webRequest.PostData(contactUri, postData, token, oauth.SigningSecret);
 
-            string _return = webRequest.PostData(baseURL, postData, token, oauth.SigningSecret);            
-         
-            
+
             return _return;
         }
 
@@ -83,27 +89,27 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string url = baseURL + id;
+            Uri specificContactUri = new Uri(contactUri.AbsoluteUri + "/" + id);
 
-            string formattedName = webRequest.PercentEncodeRfc3986("contact[name]") + "=" + webRequest.PercentEncodeRfc3986(name);
-            string formattedCompanyName = webRequest.PercentEncodeRfc3986("contact[company_name]") + "=" + webRequest.PercentEncodeRfc3986(companyName);
-            string formattedEmail = webRequest.PercentEncodeRfc3986("contact[email]") + "=" + webRequest.PercentEncodeRfc3986(email);
-            string formattedTelephone = webRequest.PercentEncodeRfc3986("contact[telephone]") + "=" + webRequest.PercentEncodeRfc3986(telephone);
-            string formattedContactTypeID = webRequest.PercentEncodeRfc3986("contact[contact_type_id]") + "=" + webRequest.PercentEncodeRfc3986(Convert.ToString(contactTypeID));
-            string postData = formattedCompanyName + "&" + formattedContactTypeID + "&" + formattedEmail + "&" + formattedName + "&" + formattedTelephone;
+            List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
+              new KeyValuePair<string,string>("contact[name]", name),
+              new KeyValuePair<string,string>("contact[email]",email),
+              new KeyValuePair<string,string>("contact[contact_type_id]",contactTypeID.ToString()),
+              new KeyValuePair<string,string>("contact[telephone]",telephone),
+              new KeyValuePair<string,string>("contact[company_name]",companyName) };
 
-            string _return = webRequest.PutData(url, postData, token, oauth.SigningSecret);
+            string _return = webRequest.PutData(specificContactUri, postData, token, oauth.SigningSecret);
 
             return _return;
         }
-        
-        public string DeleteContact(string id, string token )
+
+        public string DeleteContact(string id, string token)
         {
             SageOneWebRequest webRequest = new SageOneWebRequest();
 
-            string url = baseURL + id;
+            Uri specificContactUri = new Uri(contactUri.AbsoluteUri + "/" + id);
 
-            return webRequest.DeleteData(url, "",token, oauth.SigningSecret);
+            return webRequest.DeleteData(specificContactUri, token, oauth.SigningSecret);
         }
 
     }
