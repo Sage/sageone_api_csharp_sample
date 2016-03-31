@@ -24,7 +24,7 @@ namespace Sage_One_API_Sample_Website
             string token = (string)Session["token"];
 
             txtCompanyName.Text = "";
-            txtConatctName.Text = "";
+            txtContactName.Text = "";
             txtContactTypeID.Text = "";
 
             ContactManager contactManager = new ContactManager();
@@ -59,7 +59,7 @@ namespace Sage_One_API_Sample_Website
 
         protected void btnCreateContact_Click(object sender, EventArgs e)
         {
-            string contactName = txtConatctName.Text;
+            string contactName = txtContactName.Text;
             string companyName = txtCompanyName.Text;
             int contactTypeID = Int32.Parse(txtContactTypeID.Text);
 
@@ -78,7 +78,7 @@ namespace Sage_One_API_Sample_Website
             string selectedContact = ListBoxContacts.SelectedItem.Value.ToString();
             string text = ListBoxContacts.SelectedItem.Text.ToString();
             string[] contactValues = text.Split(',');
-            txtConatctName.Text = contactValues[1];
+            txtContactName.Text = contactValues[1];
             txtCompanyName.Text = contactValues[0];
             txtContactTypeID.Text = contactValues[4];
             
@@ -89,7 +89,7 @@ namespace Sage_One_API_Sample_Website
             string token = (string)Session["token"];
             ContactManager contactManager = new ContactManager();
             string result = contactManager.UpdateContact(ListBoxContacts.SelectedItem.Value.ToString(), 
-                txtConatctName.Text, txtCompanyName.Text, "", "", 
+                txtContactName.Text, txtCompanyName.Text, "", "", 
                 Int32.Parse(txtContactTypeID.Text), token);
 
             ListContacts();
@@ -107,7 +107,7 @@ namespace Sage_One_API_Sample_Website
         protected void btnClear_Click(object sender, EventArgs e)
         {
             txtCompanyName.Text = "";
-            txtConatctName.Text = "";
+            txtContactName.Text = "";
             txtContactTypeID.Text = "";
         }
     }
