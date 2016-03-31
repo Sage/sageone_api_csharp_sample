@@ -25,7 +25,7 @@
      <div class="row">
         <div class="col-md-4">
             <asp:Label ID="Label1" runat="server" Text="Contact Name"></asp:Label>
-            <asp:TextBox ID="txtConatctName" runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtContactName" runat="server"></asp:TextBox>
         </div>
      </div>        
       <div class="row">
