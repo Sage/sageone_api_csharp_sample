@@ -3,7 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>Getting Started with the Sage One API </h1>
+        <h2>Getting Started with the Sage One API </h2>
         <p class="lead">Details on the OAuth process and available resources can be found in the documentation area together with examples of how to compose requests and what responses look like</p>
          <address>
             <strong>Developer:</strong>   <a href="https://developers.sageone.com/">Developer Support Site</a><br />
