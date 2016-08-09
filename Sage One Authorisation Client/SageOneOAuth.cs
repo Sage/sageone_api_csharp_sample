@@ -16,10 +16,11 @@ namespace Sage_One_Authorisation_Client
         private const string ACCESS_TOKEN_URL   = "https://api.sageone.com/oauth2/token";       // Acess Token URL
         private const string CALLBACK_URL       = "http://localhost:59793/callback.aspx";       // Call back URL - this should match the Callback URL reigstered against your application on https://developers.sageone.com/
 
-        private string _clientID                = "YOUR_CLIENT_ID";                             // Client ID - this should match the Client ID reigstered against your application on https://developers.sageone.com/
-        private string _clientSSecret           = "YOUR_CLIENT_SECRET";                         // Client Secret - this should match the Client Secret reigstered against your application on https://developers.sageone.com/
-        private string _signingSecret           = "YOUR_SIGNING_SECRET";                        // Signing Secret - this should match the Signing Secret reigstered against your application on https://developers.sageone.com/
-    
+        private string _clientID = "5bbdf5e328e6e4714135"; //"YOUR_CLIENT_ID";                             // Client ID - this should match the Client ID reigstered against your application on https://developers.sageone.com/
+        private string _clientSSecret = "2095429312509ac8b9df4bac42cba1d30779f779";//"YOUR_CLIENT_SECRET";                         // Client Secret - this should match the Client Secret reigstered against your application on https://developers.sageone.com/
+        private string _signingSecret = "c366c05a19e98b48a1aa2b4cc0a6fb27b2a47ead"; // "YOUR_SIGNING_SECRET";                        // Signing Secret - this should match the Signing Secret reigstered against your application on https://developers.sageone.com/
+
+
         private string _token = "";
         private string _code = "";
 

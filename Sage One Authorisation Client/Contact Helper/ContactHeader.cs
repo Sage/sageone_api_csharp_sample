@@ -60,5 +60,6 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
 
         [JsonProperty("main_address")]
         public MainAddress Address { get; set; }
+               
     }    
 }

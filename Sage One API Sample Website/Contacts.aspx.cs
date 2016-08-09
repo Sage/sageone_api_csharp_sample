@@ -24,7 +24,7 @@ namespace Sage_One_API_Sample_Website
             string token = (string)Session["token"];
 
             txtCompanyName.Text = "";
-            txtContactName.Text = "";
+            txtConatctName.Text = "";
             txtContactTypeID.Text = "";
 
             ContactManager contactManager = new ContactManager();
@@ -59,7 +59,7 @@ namespace Sage_One_API_Sample_Website
 
         protected void btnCreateContact_Click(object sender, EventArgs e)
         {
-            string contactName = txtContactName.Text;
+            string contactName = txtConatctName.Text;
             string companyName = txtCompanyName.Text;
             int contactTypeID = Int32.Parse(txtContactTypeID.Text);
 
@@ -68,7 +68,8 @@ namespace Sage_One_API_Sample_Website
             ContactManager contactManager = new ContactManager();
 
             string result = contactManager.CreateContact(contactName, companyName, "", "", contactTypeID, token);
-                       
+
+           
             ListContacts();
 
         }
@@ -78,7 +79,7 @@ namespace Sage_One_API_Sample_Website
             string selectedContact = ListBoxContacts.SelectedItem.Value.ToString();
             string text = ListBoxContacts.SelectedItem.Text.ToString();
             string[] contactValues = text.Split(',');
-            txtContactName.Text = contactValues[1];
+            txtConatctName.Text = contactValues[1];
             txtCompanyName.Text = contactValues[0];
             txtContactTypeID.Text = contactValues[4];
             
@@ -89,7 +90,7 @@ namespace Sage_One_API_Sample_Website
             string token = (string)Session["token"];
             ContactManager contactManager = new ContactManager();
             string result = contactManager.UpdateContact(ListBoxContacts.SelectedItem.Value.ToString(), 
-                txtContactName.Text, txtCompanyName.Text, "", "", 
+                txtConatctName.Text, txtCompanyName.Text, "", "", 
                 Int32.Parse(txtContactTypeID.Text), token);
 
             ListContacts();
@@ -102,12 +103,13 @@ namespace Sage_One_API_Sample_Website
             string result = contactManager.DeleteContact(ListBoxContacts.SelectedItem.Value.ToString(), token);
 
             ListContacts();
+
         }
 
         protected void btnClear_Click(object sender, EventArgs e)
         {
             txtCompanyName.Text = "";
-            txtContactName.Text = "";
+            txtConatctName.Text = "";
             txtContactTypeID.Text = "";
         }
     }

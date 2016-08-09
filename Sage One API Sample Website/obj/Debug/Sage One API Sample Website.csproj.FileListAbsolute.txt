@@ -106,3 +106,57 @@
 \\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.csprojResolveAssemblyReference.cache
 \\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.dll
 \\vmware-host\Shared Folders\Desktop\Sage One API Samples\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.pdb
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Sage One API Sample Website.dll.config
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Sage One API Sample Website.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Sage One API Sample Website.pdb
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Antlr3.Runtime.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\AspNet.ScriptManager.bootstrap.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\EntityFramework.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\EntityFramework.SqlServer.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.ScriptManager.MSAjax.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.ScriptManager.WebForms.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Owin.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Sage One Authorisation Client.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\System.Web.Optimization.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\System.Web.Providers.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\WebGrease.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Newtonsoft.Json.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Sage One Authorisation Client.pdb
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\System.Web.Optimization.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Antlr3.Runtime.pdb
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\EntityFramework.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\EntityFramework.SqlServer.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\System.Web.Providers.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\bin\Newtonsoft.Json.xml
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.csprojResolveAssemblyReference.cache
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.dll
+C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One API Sample Website\obj\Debug\Sage One API Sample Website.pdb
