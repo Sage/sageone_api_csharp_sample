@@ -18,7 +18,7 @@ namespace Sage_One_Authorisation_Client
         /// <param name="signingKey">Your developer signing key</param>
         /// <param name="nonce">The nonce</param>
         /// <returns>The signature as a string</returns>
-        public static string GenerateSignature(string httpMethod, Uri url, List<KeyValuePair<string, string>> requestBody, string signingSecret, string token, string nonce)
+        public static string GenerateSignature(string httpMethod, Uri url, string requestBody, string signingSecret, string token, string nonce)
         {
             // Uppercase the http method e.g. GET
             httpMethod = httpMethod.ToUpper();
@@ -67,7 +67,7 @@ namespace Sage_One_Authorisation_Client
         /// <param name="url">The URL</param>
         /// <param name="requestBody">The request body</param>
         /// <returns>Am escaped and alphabetically sorted string representing the parameters</returns>
-        private static string NormalizeParams(string httpMethod, Uri url, List<KeyValuePair<string, string>> requestBody)
+        private static string NormalizeParams(string httpMethod, Uri url, string requestBody)
         {
             // Create a List of type KeyValuePair to contain the parameters
             IEnumerable<KeyValuePair<string, string>> kvpParams = new List<KeyValuePair<string, string>>();
@@ -84,20 +84,16 @@ namespace Sage_One_Authorisation_Client
                 // Add each parameter and value found to the List of paramters
                 kvpParams = kvpParams.Union(queryParams);
             }
-
-            //Process the body parameters
-            if (httpMethod == "POST" || httpMethod == "PUT")
+           
+            List<KeyValuePair<string, string>> encodedrequestBodyParams = new List<KeyValuePair<string, string>>();
+                 
+            if (requestBody != null)
             {
-                List<KeyValuePair<string, string>> encodedrequestBodyParams = new List<KeyValuePair<string, string>>();
-
-                foreach (KeyValuePair<string, string> pair in requestBody)
-                {
-                    encodedrequestBodyParams.Add(new KeyValuePair<string, string>(Uri.EscapeDataString(pair.Key), Uri.EscapeDataString(pair.Value)));
-                }
-
-                kvpParams = kvpParams.Union(encodedrequestBodyParams);
-
+                requestBody = Uri.EscapeDataString(Base64Encode(requestBody));               
             }
+
+            encodedrequestBodyParams.Add(new KeyValuePair<string, string>("body", requestBody));
+            kvpParams = kvpParams.Union(encodedrequestBodyParams);
 
             // Sort the parameters
             IEnumerable<string> sortedParams =
@@ -109,6 +105,12 @@ namespace Sage_One_Authorisation_Client
             string encodedParams = String.Join("&", sortedParams);
             encodedParams = Uri.EscapeDataString(encodedParams);
             return encodedParams;
+        }
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
     }
 }

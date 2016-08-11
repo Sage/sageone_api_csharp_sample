@@ -49,7 +49,7 @@
     <Compile Include="Contact Helper\ContactHeader.cs" />
     <Compile Include="Contact Helper\ContactMainAddress.cs" />
     <Compile Include="Contact Helper\ContactManager.cs" />
-    <Compile Include="Contact Helper\ContactType.cs" />
+    <Compile Include="Contact Helper\ContactTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SageOneAPIRequestSigner.cs" />
     <Compile Include="SageOneOAuth.cs" />

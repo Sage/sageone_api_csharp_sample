@@ -12,14 +12,15 @@ namespace Sage_One_Authorisation_Client
 {
     public class SageOneOAuth
     {
-        private const string AUTHORIZE_URL      = "https://www.sageone.com/oauth2/auth";        // Authorisation URL
-        private const string ACCESS_TOKEN_URL   = "https://api.sageone.com/oauth2/token";       // Acess Token URL
+        private const string AUTHORIZE_URL      = "https://mysageone.ca.sageone.com/oauth2/auth";        // Authorisation URL
+        private const string ACCESS_TOKEN_URL   = "https://mysageone.ca.sageone.com/oauth2/token/";       // Acess Token URL
         private const string CALLBACK_URL       = "http://localhost:59793/callback.aspx";       // Call back URL - this should match the Callback URL reigstered against your application on https://developers.sageone.com/
 
-        private string _clientID = "5bbdf5e328e6e4714135"; //"YOUR_CLIENT_ID";                             // Client ID - this should match the Client ID reigstered against your application on https://developers.sageone.com/
-        private string _clientSSecret = "2095429312509ac8b9df4bac42cba1d30779f779";//"YOUR_CLIENT_SECRET";                         // Client Secret - this should match the Client Secret reigstered against your application on https://developers.sageone.com/
-        private string _signingSecret = "c366c05a19e98b48a1aa2b4cc0a6fb27b2a47ead"; // "YOUR_SIGNING_SECRET";                        // Signing Secret - this should match the Signing Secret reigstered against your application on https://developers.sageone.com/
+        private string _clientID = "xxxxxxxxxxxxxxxx"; // Client ID - this should match the Client ID reigstered against your application on https://developers.sageone.com/
+        private string _clientSSecret = "xxxxxxxxxxxxxxxx"; // Client Secret - this should match the Client Secret reigstered against your application on https://developers.sageone.com/
+        private string _signingSecret = "xxxxxxxxxxxxxxxx"; // Signing Secret - this should match the Signing Secret reigstered against your application on https://developers.sageone.com/
 
+        private string _subscriptionKey = "xxxxxxxxxxxxxxxx"; // Subscription Key - this should match the Sage One Subscription Key generated for your profile on https://developer.columbus.sage.com
 
         private string _token = "";
         private string _code = "";
@@ -42,20 +43,18 @@ namespace Sage_One_Authorisation_Client
 
             }
         }
-
-        //public string AccessTokenPostData
-        public List<KeyValuePair<string, string>> AccessTokenPostData
+        
+        public string AccessTokenPostData
         { 
             get
-            {
-                List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
-              new KeyValuePair<string,string>("client_id", this.ClientID),
-              new KeyValuePair<string,string>("client_secret",this.ClientSecret),
-              new KeyValuePair<string,string>("code", _code),
-              new KeyValuePair<string,string>("grant_type", "authorization_code"),
-              new KeyValuePair<string,string>("redirect_uri",HttpUtility.UrlEncode(CALLBACK_URL))
-             };
-             return postData;
+            {                
+                StringBuilder postDataBuilder = new StringBuilder();
+                postDataBuilder.Append("client_id=" + this.ClientID + "&");
+                postDataBuilder.Append("client_secret=" + this.ClientSecret + "&");
+                postDataBuilder.Append("code=" + HttpUtility.UrlEncode(_code) + "&");
+                postDataBuilder.Append("grant_type=authorization_code&");
+                postDataBuilder.Append("redirect_uri=" + HttpUtility.UrlEncode(CALLBACK_URL));
+                return postDataBuilder.ToString();
             }
         }
 
@@ -95,6 +94,14 @@ namespace Sage_One_Authorisation_Client
             } 
         }
 
+        public string SubscriptionKey
+        {
+            get
+            {
+                return _subscriptionKey;
+            }           
+        }
+
         #endregion
 
         /// <summary>
@@ -106,7 +113,7 @@ namespace Sage_One_Authorisation_Client
             SageOneWebRequest request = new SageOneWebRequest();
             _code = code;
             
-            List<KeyValuePair<string, string>> postData = AccessTokenPostData;
+            string postData = AccessTokenPostData;
             Uri accesstokenURI = new Uri(AccessTokenURL);
             string response = request.PostData(accesstokenURI, postData, "", "");
             

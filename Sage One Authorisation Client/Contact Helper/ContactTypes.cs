@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Sage_One_Authorisation_Client.Contact_Helpers
 {
-    public class MainAddress
+    public class ContactTypes
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -18,5 +18,8 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
 
         [JsonProperty("$path")]
         public string Path { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }        
     }
 }

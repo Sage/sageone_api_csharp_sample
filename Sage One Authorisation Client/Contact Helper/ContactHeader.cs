@@ -7,16 +7,22 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
 {
     public partial class ContactGetHeader
     {
-        [JsonProperty("$totalResults")]
-        public int TotalResults { get; set; }
+        [JsonProperty("$total")]
+        public int Total { get; set; }
 
-        [JsonProperty("$startIndex")]
-        public int StartIndex { get; set; }
+        [JsonProperty("$page")]
+        public int Page { get; set; }
+
+        [JsonProperty("$next")]
+        public string Next { get; set; }
+
+        [JsonProperty("$back")]
+        public string Back { get; set; }
 
         [JsonProperty("$itemsPerPage")]
         public int ItemsPerPage { get; set; }
 
-        [JsonProperty("$resources")]
+        [JsonProperty("$items")]
         public List<ContactToGet> Contacts { get; set; }
     }
 
@@ -29,19 +35,22 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
     public class ContactToPost : Contact
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("contact_type_id")]
-        public int ContactTypeID { get; set; }
+        public string ContactTypeID { get; set; }
     }
 
     public class ContactToGet : Contact
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        [JsonProperty("contact_type")]
-        public ContactType ContactType { get; set; }
+        [JsonProperty("displayed_as")]
+        public string DisplayedAs { get; set; }
+
+        [JsonProperty("$path")]
+        public string Path { get; set; }
     }
 
     public abstract class Contact
@@ -49,17 +58,20 @@ namespace Sage_One_Authorisation_Client.Contact_Helpers
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("company_name")]
-        public string CompanyName { get; set; }
+        [JsonProperty("reference")]
+        public string Reference { get; set; }
 
-        [JsonProperty("email")]
-        public string Email { get; set; }
+        [JsonProperty("tax_number")]
+        public string TaxNumber { get; set; }
 
-        [JsonProperty("telephone")]
-        public string Telephone { get; set; }
+        [JsonProperty("notes")]
+        public string Notes { get; set; }
 
         [JsonProperty("main_address")]
         public MainAddress Address { get; set; }
-               
+
+        [JsonProperty("contact_types")]
+        public List<ContactTypes> ContactTypes { get; set; }
+
     }    
 }

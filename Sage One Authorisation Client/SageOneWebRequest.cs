@@ -32,7 +32,7 @@ namespace Sage_One_Authorisation_Client
             return GetRequest(webRequest);
         }
 
-        public string PostData(Uri url, List<KeyValuePair<string, string>> requestBody, string token, string signingSecret)
+        public string PostData(Uri url, string requestBody, string token, string signingSecret)
         {
             try
             {
@@ -48,11 +48,11 @@ namespace Sage_One_Authorisation_Client
                 // Set the request headers
                 SetHeaders(Method.POST, webRequest, token, signature, nonce);
 
-                // Convert the requestBody into post parameters 
-                string postParams = ConvertPostParams(requestBody);
+                //// Convert the requestBody into post parameters 
+                //string postParams = ConvertPostParams(requestBody);
 
                 // Send the POST request
-                return SendRequest(webRequest, postParams);
+                return SendRequest(webRequest, requestBody);
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace Sage_One_Authorisation_Client
 
        
 
-        public string PutData(Uri url, List<KeyValuePair<string, string>> requestBody, string token, string signingSecret )
+        public string PutData(Uri url, string requestBody, string token, string signingSecret )
         {
             // Create the nonce to be used by the request
             string nonce = GenerateNonce();
@@ -76,11 +76,11 @@ namespace Sage_One_Authorisation_Client
             // Set the request headers
             SetHeaders(Method.PUT, webRequest, token, signature, nonce);
 
-            // Convert the requestBody into put parameters
-            string putParams = ConvertPostParams(requestBody);
+            //// Convert the requestBody into put parameters
+            //string putParams = ConvertPostParams(requestBody);
 
             // Send the PUT request
-            return SendRequest(webRequest, putParams);
+            return SendRequest(webRequest, requestBody);
         }
 
         public string DeleteData( Uri baseurl, string token, string signingSecret)
@@ -104,12 +104,15 @@ namespace Sage_One_Authorisation_Client
         
         private void SetHeaders ( Method method, HttpWebRequest webRequest, string accessToken,string signature, string nonce )
         {
+            SageOneOAuth auth = new SageOneOAuth();
+            
             // Set the required header values on the web request
             webRequest.AllowAutoRedirect = true;
             webRequest.Accept = "*/*";
             webRequest.UserAgent = "CSharp Test";
             webRequest.Headers.Add("X-Signature", signature);
             webRequest.Headers.Add("X-Nonce", nonce);
+            webRequest.Headers.Add("ocp-apim-subscription-key", auth.SubscriptionKey);
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Timeout = 100000;
 
@@ -139,8 +142,6 @@ namespace Sage_One_Authorisation_Client
                     webRequest.Method = "DELETE";
                     break;
             }
-            
-            
         }
 
         private string GetRequest( HttpWebRequest webRequest)

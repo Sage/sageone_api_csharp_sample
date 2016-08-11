@@ -14,7 +14,6 @@
             <p>
                List of Sage One Contacts
             </p>
-
             <br />
              <asp:ListBox ID="ListBoxContacts" runat="server" Height="300px" AutoPostBack="True" Width="800px" OnSelectedIndexChanged="ListBoxContacts_SelectedIndexChanged">
              </asp:ListBox>
@@ -28,26 +27,26 @@
             <asp:Label ID="Label1" runat="server" Text="Contact Name"></asp:Label>
             <asp:TextBox ID="txtConatctName" runat="server"></asp:TextBox>
         </div>
-     </div>
-        
+     </div>        
       <div class="row">
         <div class="col-md-4">
-            <asp:Label ID="Label2" runat="server" Text="Company Name"></asp:Label>
-            <asp:TextBox ID="txtCompanyName" runat="server"></asp:TextBox>
+            <asp:Label ID="Label2" runat="server" Text="ID"></asp:Label>
+            <asp:TextBox ID="txtID" runat="server"></asp:TextBox>
         </div>
      </div>
      <div class="row">
         <div class="col-md-4"> 
-            <asp:Label ID="Label3" runat="server" Text="Contact Type ID ( 1 = Customer, 2 = Supplier)"></asp:Label>
+            <asp:Label ID="Label3" runat="server" Text="Contact Type ID (CUSTOMER, VENDOR)"></asp:Label>
             <asp:TextBox ID="txtContactTypeID" runat="server"></asp:TextBox>
        </div>
      </div>
-      <div class="row">
+     <br />
+     <div class="row">
         <div class="col-md-4"> 
-           <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
-           <asp:Button ID="btnCreateContact" runat="server" Text="Create" OnClick="btnCreateContact_Click" />
-           <asp:Button ID="btnUpdateContact" runat="server" Text="Update" OnClick="btnUpdateContact_Click" />
-           <asp:Button ID="btnDeleteContact" runat="server" Text="Delete" OnClick="btnDeleteContact_Click" />
+            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
+            <asp:Button ID="btnCreateContact" runat="server" Text="Create" OnClick="btnCreateContact_Click" />
+            <asp:Button ID="btnUpdateContact" runat="server" Text="Update" OnClick="btnUpdateContact_Click" />
+            <asp:Button ID="btnDeleteContact" runat="server" Text="Delete" OnClick="btnDeleteContact_Click" />
         </div>
      </div>     
     </form>
