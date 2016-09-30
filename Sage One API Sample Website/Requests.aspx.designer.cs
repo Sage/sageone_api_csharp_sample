@@ -10,7 +10,7 @@
 namespace Sage_One_API_Sample_Website {
     
     
-    public partial class Contacts {
+    public partial class Requests {
         
         /// <summary>
         /// form1 control.
@@ -22,15 +22,6 @@ namespace Sage_One_API_Sample_Website {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ListBoxContacts control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox ListBoxContacts;
-        
-        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -40,13 +31,22 @@ namespace Sage_One_API_Sample_Website {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// txtConatctName control.
+        /// txtEndpoint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConatctName;
+        protected global::System.Web.UI.WebControls.TextBox txtEndpoint;
+        
+        /// <summary>
+        /// methodDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList methodDropDownList;
         
         /// <summary>
         /// Label2 control.
@@ -58,13 +58,22 @@ namespace Sage_One_API_Sample_Website {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// txtID control.
+        /// txtAreaRequestBody control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtID;
+        protected global::System.Web.UI.WebControls.TextBox txtAreaRequestBody;
+        
+        /// <summary>
+        /// btnMakeRequest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnMakeRequest;
         
         /// <summary>
         /// Label3 control.
@@ -76,48 +85,12 @@ namespace Sage_One_API_Sample_Website {
         protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
-        /// txtContactTypeID control.
+        /// txtAreaResult control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtContactTypeID;
-        
-        /// <summary>
-        /// btnClear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClear;
-        
-        /// <summary>
-        /// btnCreateContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreateContact;
-        
-        /// <summary>
-        /// btnUpdateContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpdateContact;
-        
-        /// <summary>
-        /// btnDeleteContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDeleteContact;
+        protected global::System.Web.UI.WebControls.TextBox txtAreaResult;
     }
 }

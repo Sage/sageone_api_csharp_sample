@@ -6,13 +6,16 @@
 <head runat="server">
 </head>
 <body>
+    <form id="form1" runat="server">
     <div class="row">
         <div class="col-md-4">
             <h2>Stage 2 - Exchange Authorisation Token for your Access Token</h2>
-            </br>
-             <asp:Label ID="LabelStatus" runat="server" Font-Names="Arial" Text="Label"></asp:Label>
+            </br>            
         </div>
     </div>
- 
+    <div>
+        <asp:Label ID="LabelStatus" runat="server" Text="Go to json page"></asp:Label>
+    </div>         
+    </form> 
 </body>
 </html>

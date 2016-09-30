@@ -18,7 +18,7 @@ namespace Sage_One_Authorisation_Client
         /// <param name="signingKey">Your developer signing key</param>
         /// <param name="nonce">The nonce</param>
         /// <returns>The signature as a string</returns>
-        public static string GenerateSignature(string httpMethod, Uri url, string requestBody, string signingSecret, string token, string nonce)
+        public static string GenerateSignature(string httpMethod, Uri url, string requestBody, string signingSecret, string token, string siteID, string nonce)
         {
             // Uppercase the http method e.g. GET
             httpMethod = httpMethod.ToUpper();
@@ -34,8 +34,10 @@ namespace Sage_One_Authorisation_Client
 
             string signingKey = Uri.EscapeDataString(signingSecret) + "&" + Uri.EscapeDataString(token);
 
+            string encodedResourceOwnerID = Uri.EscapeDataString(siteID);
+
             // Build the signature base string to be signed with the Consumer Secret (Developer Key)
-            string baseString = String.Format("{0}&{1}&{2}&{3}", httpMethod, encodedUri, encodedParams, encodedNonce);
+            string baseString = String.Format("{0}&{1}&{2}&{3}&{4}", httpMethod, encodedUri, encodedParams, encodedNonce, encodedResourceOwnerID);
 
             // Generate a hash based message authentication code based on the
             // signing key and the entire message that has been parameterised and escaped
