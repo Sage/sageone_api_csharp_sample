@@ -14,7 +14,7 @@ namespace Sage_One_Authorisation_Client
     {
         public enum Method { GET, POST, PUT, DELETE };
 
-        public string GetData( Uri url, string token, string signingSecret )
+        public string GetData( Uri url, string token, string siteID, string signingSecret )
         {
             // Create the nonce to be used by the request
             string nonce = GenerateNonce();      
@@ -23,19 +23,26 @@ namespace Sage_One_Authorisation_Client
             HttpWebRequest webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
 
             // Generate a signature
-            string signature = SageOneAPIRequestSigner.GenerateSignature("GET", url, null, signingSecret, token, nonce);
+            string signature = SageOneAPIRequestSigner.GenerateSignature("GET", url, null, signingSecret, token, siteID, nonce);
             
             // Set the request headers
-            SetHeaders(Method.GET, webRequest, token, signature, nonce );
+            SetHeaders(Method.GET, webRequest, token, siteID, signature, nonce, true);
 
             // Send the GET request
             return GetRequest(webRequest);
         }
 
-        public string PostData(Uri url, string requestBody, string token, string signingSecret)
+        public string PostData(Uri url, string requestBody, string token, string siteID, string signingSecret)
         {
             try
             {
+                Boolean json = true;
+
+                if (url.AbsolutePath.EndsWith("token/"))
+                {
+                    json = false;
+                }
+
                 // Create the nonce to be used by the request
                 string nonce = GenerateNonce();
 
@@ -43,10 +50,10 @@ namespace Sage_One_Authorisation_Client
                 HttpWebRequest webRequest = System.Net.WebRequest.Create(url) as HttpWebRequest;
 
                 // Generate a signature
-                string signature = SageOneAPIRequestSigner.GenerateSignature("POST", url, requestBody, signingSecret, token, nonce);
+                string signature = SageOneAPIRequestSigner.GenerateSignature("POST", url, requestBody, signingSecret, token, siteID, nonce);
 
                 // Set the request headers
-                SetHeaders(Method.POST, webRequest, token, signature, nonce);
+                SetHeaders(Method.POST, webRequest, token, siteID, signature, nonce, json);
 
                 //// Convert the requestBody into post parameters 
                 //string postParams = ConvertPostParams(requestBody);
@@ -62,7 +69,7 @@ namespace Sage_One_Authorisation_Client
 
        
 
-        public string PutData(Uri url, string requestBody, string token, string signingSecret )
+        public string PutData(Uri url, string requestBody, string token, string siteID, string signingSecret )
         {
             // Create the nonce to be used by the request
             string nonce = GenerateNonce();
@@ -71,10 +78,10 @@ namespace Sage_One_Authorisation_Client
             HttpWebRequest webRequest = System.Net.WebRequest.Create( url ) as HttpWebRequest;
 
             // Generate a signature
-            string signature = SageOneAPIRequestSigner.GenerateSignature("PUT", url, requestBody, signingSecret, token, nonce);
+            string signature = SageOneAPIRequestSigner.GenerateSignature("PUT", url, requestBody, signingSecret, token, siteID, nonce);
 
             // Set the request headers
-            SetHeaders(Method.PUT, webRequest, token, signature, nonce);
+            SetHeaders(Method.PUT, webRequest, token, siteID, signature, nonce, true);
 
             //// Convert the requestBody into put parameters
             //string putParams = ConvertPostParams(requestBody);
@@ -83,7 +90,7 @@ namespace Sage_One_Authorisation_Client
             return SendRequest(webRequest, requestBody);
         }
 
-        public string DeleteData( Uri baseurl, string token, string signingSecret)
+        public string DeleteData( Uri baseurl, string token, string siteID, string signingSecret)
         {
             // Create the nonce to be used by the request
             string nonce = GenerateNonce();
@@ -92,17 +99,17 @@ namespace Sage_One_Authorisation_Client
             HttpWebRequest webRequest = System.Net.WebRequest.Create(baseurl) as HttpWebRequest;
 
             // Generate a signature
-            string signature = SageOneAPIRequestSigner.GenerateSignature("DELETE", baseurl, null, signingSecret, token, nonce);
+            string signature = SageOneAPIRequestSigner.GenerateSignature("DELETE", baseurl, null, signingSecret, token, siteID, nonce);
 
             // Set the request headers
-            SetHeaders(Method.DELETE, webRequest, token, signature, nonce);
+            SetHeaders(Method.DELETE, webRequest, token, siteID, signature, nonce, true);
 
             // Send the DELETE request
             return GetRequest(webRequest);
         }
 
         
-        private void SetHeaders ( Method method, HttpWebRequest webRequest, string accessToken,string signature, string nonce )
+        private void SetHeaders ( Method method, HttpWebRequest webRequest, string accessToken, string siteID, string signature, string nonce, bool json )
         {
             SageOneOAuth auth = new SageOneOAuth();
             
@@ -113,16 +120,30 @@ namespace Sage_One_Authorisation_Client
             webRequest.Headers.Add("X-Signature", signature);
             webRequest.Headers.Add("X-Nonce", nonce);
             webRequest.Headers.Add("ocp-apim-subscription-key", auth.SubscriptionKey);
-            webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Timeout = 100000;
 
+            if (json)
+            {
+                webRequest.ContentType = "application/json";
+            }
+            else
+            {
+                webRequest.ContentType = "application/x-www-form-urlencoded";
+            }
             // pass the current access token as a header parameter
             if (accessToken != "")
             {
                 string authorization = String.Concat("Bearer ", accessToken);
                 webRequest.Headers.Add("Authorization", authorization);
             }
-            
+
+            // pass the current site id as a header parameter
+            if (siteID != "")
+            {
+                
+                webRequest.Headers.Add("X-Site", siteID);
+            }
+
             // Set the request method verb
             switch ( method )
             {
@@ -184,6 +205,10 @@ namespace Sage_One_Authorisation_Client
                 response = webRequest.GetResponse();
                 responseReader = new StreamReader(response.GetResponseStream());
                 responseData = responseReader.ReadToEnd();
+
+                webRequest.GetResponse().GetResponseStream().Close();
+                responseReader.Close();
+                responseReader = null;
             }
             catch (WebException webex)
             {
@@ -193,20 +218,15 @@ namespace Sage_One_Authorisation_Client
                 {
                     text = sr.ReadToEnd();
                 }
-
-                throw new Exception(text,webex);
-                
+                                
+                responseData = text + webex.InnerException;
             }
             catch (Exception ex)
             {
-                string message = ex.Message; 
-            }
-            finally
-            {
-                webRequest.GetResponse().GetResponseStream().Close();
+                responseData = ex.Message;
                 responseReader.Close();
                 responseReader = null;
-            }
+            }           
 
             return responseData;
         }

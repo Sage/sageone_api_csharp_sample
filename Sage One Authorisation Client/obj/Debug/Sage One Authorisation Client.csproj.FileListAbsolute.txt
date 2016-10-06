@@ -16,6 +16,5 @@ C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_
 C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\bin\Debug\Sage One Authorisation Client.pdb
 C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\bin\Debug\Newtonsoft.Json.dll
 C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\bin\Debug\Newtonsoft.Json.xml
-C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\obj\Debug\Sage One Authorisation Client.csprojResolveAssemblyReference.cache
 C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\obj\Debug\Sage One Authorisation Client.dll
 C:\Users\admin\Documents\Visual Studio 2015\Projects\cloned version\sageone_api_csharp_sample\Sage One Authorisation Client\obj\Debug\Sage One Authorisation Client.pdb
