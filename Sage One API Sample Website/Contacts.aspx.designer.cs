@@ -40,13 +40,13 @@ namespace Sage_One_API_Sample_Website {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// txtConatctName control.
+        /// txtContactName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConatctName;
+        protected global::System.Web.UI.WebControls.TextBox txtContactName;
         
         /// <summary>
         /// Label2 control.
