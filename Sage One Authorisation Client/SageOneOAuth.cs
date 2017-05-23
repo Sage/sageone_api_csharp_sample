@@ -14,12 +14,13 @@ namespace Sage_One_Authorisation_Client
 {
     public class SageOneOAuth
     {
-        private const string AUTHORIZE_URL      = "https://www.sageone.com/oauth2/auth";        // Authorisation URL
+        private const string AUTHORIZE_URL      = "https://www.sageone.com/oauth2/auth/central";        // Authorisation URL
 
-        private const string CA_ACCESS_TOKEN_URL   = "https://mysageone.ca.sageone.com/oauth2/token/";       // Acess Token URL
-        private const string US_ACCESS_TOKEN_URL = "https://mysageone.na.sageone.com/oauth2/token/";       // Acess Token URL
-        private const string GB_ACCESS_TOKEN_URL = "https://app.sageone.com/oauth2/token/";       // Acess Token URL
-        private const string IE_ACCESS_TOKEN_URL = "https://app.sageone.com/oauth2/token/";       // Acess Token URL
+        private const string CA_ACCESS_TOKEN_URL   = "https://mysageone.ca.sageone.com/oauth2/token/";       // Access Token URL
+        private const string US_ACCESS_TOKEN_URL = "https://mysageone.na.sageone.com/oauth2/token/";       // Access Token URL
+        private const string GB_ACCESS_TOKEN_URL = "https://app.sageone.com/oauth2/token/";       // Access Token URL
+        private const string IE_ACCESS_TOKEN_URL = "https://app.sageone.com/oauth2/token/";       // Access Token URL
+        private const string EU_ACCESS_TOKEN_URL = "https://oauth.eu.sageone.com/token";          // Access Token URL
         private const string CALLBACK_URL       = "http://localhost:59793/callback.aspx";       // Call back URL - this should match the Callback URL reigstered against your application on https://developers.sageone.com/
 
         private string _clientID = "xxxxxxxxxxxxxxx"; // Client ID - this should match the Client ID reigstered against your application on https://developers.sageone.com/
@@ -59,6 +60,12 @@ namespace Sage_One_Authorisation_Client
                         return GB_ACCESS_TOKEN_URL;
                     case "IE":
                         return IE_ACCESS_TOKEN_URL;
+                    case "DE":
+                        return EU_ACCESS_TOKEN_URL;
+                    case "ES":
+                        return EU_ACCESS_TOKEN_URL;
+                    case "FR":
+                        return EU_ACCESS_TOKEN_URL;
                 }
 
                 return null;
