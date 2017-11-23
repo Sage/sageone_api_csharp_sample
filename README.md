@@ -5,3 +5,5 @@ Update the Sage One Authorisation Client solution's [SageOneOAuth.cs](Sage%20One
 Authentication with Sage One is handled in [SageOneOAuth.cs](Sage%20One%20Authorisation%20Client/SageOneOAuth.cs).
 
 An example application that consumes the client can be seen in the Sage One API sample Website Solution.
+
+##### Note: Request signing and noncing (the X-Signature and X-Nonce headers) is no longer checked in v3. The related code will soon be removed from this repo.
