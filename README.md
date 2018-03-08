@@ -1,9 +1,9 @@
-Sample application that integrates with Sage One Accounting via the Sage One API.
+Sample application that integrates with Sage Business Cloud Accounting via the Sage API.
 
-Update the Sage One Authorisation Client solution's [SageOneOAuth.cs](Sage%20One%20Authorisation%20Client/SageOneOAuth.cs) file with your application's `callback_url`, `client_id`, `client_secret` and `signing_secret`.
+Update the Authorisation Client solution's [SageOneOAuth.cs](Sage%20One%20Authorisation%20Client/SageOneOAuth.cs) file with your application's `callback_url`, `client_id`, `client_secret` and `signing_secret`.
 
-Authentication with Sage One is handled in [SageOneOAuth.cs](Sage%20One%20Authorisation%20Client/SageOneOAuth.cs).
+Authentication with Sage is handled in [SageOneOAuth.cs](Sage%20One%20Authorisation%20Client/SageOneOAuth.cs).
 
-An example application that consumes the client can be seen in the Sage One API sample Website Solution.
+An example application that consumes the client can be seen in the sample Website Solution.
 
 ##### Note: Request signing and noncing (the X-Signature and X-Nonce headers) is no longer checked in v3. The related code will soon be removed from this repo.
