@@ -7,3 +7,10 @@ Authentication with Sage is handled in [SageOneOAuth.cs](Sage%20One%20Authorisat
 An example application that consumes the client can be seen in the sample Website Solution.
 
 ##### Note: Request signing and noncing (the X-Signature and X-Nonce headers) is no longer checked in v3. The related code will soon be removed from this repo.
+
+## License
+
+This sample application is available as open source under the terms of the
+[MIT licence](LICENSE).
+
+Copyright (c) 2018 Sage Group Plc. All rights reserved.
