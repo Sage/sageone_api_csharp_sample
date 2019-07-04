@@ -1,0 +1,18 @@
+{
+  "FilePath": "/Users/roschmidt/sagedev/sageone_api_csharp_dotnet_core_sample/app/app.csproj",
+  "Configuration": {
+    "ConfigurationName": "MVC-2.1",
+    "LanguageVersion": "2.1",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-2.1"
+      }
+    ]
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 703
+  },
+  "RootNamespace": "app",
+  "Documents": []
+}
