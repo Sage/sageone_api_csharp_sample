@@ -1,6 +1,6 @@
 #!/bin/sh
 
 echo Building docker image ...
-docker build --rm -t sageone_api_csharp_dotnet_core_sample -f Dockerfile .
+docker build --rm -t sage_accounting_csharp_sample -f Dockerfile .
 
 echo Setup complete.

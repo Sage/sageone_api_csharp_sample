@@ -1,0 +1,34 @@
+﻿<Properties StartupConfiguration="{98264946-9992-4B4E-9B36-381FEDD4E308}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="app/Properties/launchSettings.json">
+    <Files>
+      <File FileName="app/appsettings.json" Line="1" Column="1" />
+      <File FileName="app/Properties/launchSettings.json" Line="1" Column="1" />
+      <File FileName="app/Controllers/ValuesController.cs" Line="1" Column="1" />
+      <File FileName="app/Startup.cs" Line="20" Column="40" />
+      <File FileName="app/Program.cs" Line="1" Column="1" />
+      <File FileName="app/appsettings.Development.json" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="app" expanded="True">
+            <Node name="app" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Properties" expanded="True">
+                <Node name="launchSettings.json" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.app PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
