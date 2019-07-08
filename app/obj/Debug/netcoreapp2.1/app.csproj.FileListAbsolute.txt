@@ -3,7 +3,6 @@
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/bin/Debug/netcoreapp2.1/app.runtimeconfig.dev.json
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/bin/Debug/netcoreapp2.1/app.dll
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/bin/Debug/netcoreapp2.1/app.pdb
-/Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.csprojAssemblyReference.cache
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.csproj.CoreCompileInputs.cache
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.RazorAssemblyInfo.cache
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.RazorAssemblyInfo.cs
@@ -12,3 +11,4 @@
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.RazorTargetAssemblyInfo.cache
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.dll
 /Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.pdb
+/Users/roschmidt/sagedev/sageone_api_csharp_sample/app/obj/Debug/netcoreapp2.1/app.csprojAssemblyReference.cache

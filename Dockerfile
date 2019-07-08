@@ -1,18 +1,23 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-stretch-slim AS base
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+WORKDIR /application
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /
-COPY app/ app/
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY app/*.csproj ./app/
+WORKDIR /application/app
+RUN dotnet restore
 
-RUN dotnet restore /app/app.csproj
+# copy everything else and build app
+COPY app/. /application/app/
+WORKDIR /application/app/
+RUN dotnet publish -c Release -o out
 
-RUN mkdir /dist 
 
-RUN dotnet build "/app/app.csproj" -c Release -o /dist
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
+WORKDIR /application
+COPY --from=build /application/app/out ./
+ENTRYPOINT ["dotnet", "app.dll"]
 
-FROM build AS publish
-RUN dotnet publish "app/app.csproj" -c Release -o /dist
 
 #RUN dotnet /dist/app.dll
 

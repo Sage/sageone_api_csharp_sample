@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.StaticFiles;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace app
 {
@@ -26,6 +29,8 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDirectoryBrowser();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,8 +45,23 @@ namespace app
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseFileServer();
+            app.UseStaticFiles();
+            app.UseDefaultFiles();
+
+
+            //app.UseHttpsRedirection();
             app.UseMvc();
+/*
+            String path = Path.Combine("/dist", "wwwroot", "images");
+            Console.WriteLine("####: " + path);
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(path),
+                RequestPath = "/MyImages"
+            });
+  */          
         }
     }
 }
