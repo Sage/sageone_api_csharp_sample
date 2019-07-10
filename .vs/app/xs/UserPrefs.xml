@@ -1,24 +1,27 @@
 ﻿<Properties StartupConfiguration="{98264946-9992-4B4E-9B36-381FEDD4E308}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="app/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="app/Controllers/ValuesController.cs">
     <Files>
-      <File FileName="app/Startup.cs" Line="48" Column="30" />
-      <File FileName="app/Program.cs" Line="28" Column="2" />
-      <File FileName="app/Properties/launchSettings.json" Line="30" Column="2" />
+      <File FileName="app/Startup.cs" Line="46" Column="14" />
+      <File FileName="app/Program.cs" Line="29" Column="1" />
       <File FileName="app/appsettings.Development.json" Line="1" Column="1" />
-      <File FileName="app/appsettings.json" Line="3" Column="4" />
-      <File FileName="app/Controllers/ValuesController.cs" Line="1" Column="1" />
+      <File FileName="app/Controllers/ValuesController.cs" Line="13" Column="29" />
+      <File FileName="app/appsettings.json" Line="9" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="app" expanded="True">
             <Node name="app" expanded="True">
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="ValuesController.cs" selected="True" />
+              </Node>
               <Node name="Properties" expanded="True" />
-              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

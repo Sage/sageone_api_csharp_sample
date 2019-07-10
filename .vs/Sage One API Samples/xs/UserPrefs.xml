@@ -1,0 +1,21 @@
+﻿<Properties StartupConfiguration="{9CDF0A5E-7DB3-4DFA-AC89-C1CFFEF9D34B}|">
+  <MonoDevelop.Ide.ItemProperties.Sage_220One_220API_220Sample_220Website PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Sage One API Samples" expanded="True">
+            <Node name="Sage One API Sample Website" expanded="True" selected="True" />
+            <Node name="Sage One Authorisation Client" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

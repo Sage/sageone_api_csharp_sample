@@ -6,6 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
+    [Route("auth/callback/")]
+    [ApiController]
+    public class CallbackController : ControllerBase
+    {
+        // GET auth/callback
+        [HttpGet]
+        public void GetData(string code, string country, string state) 
+        {
+            Console.WriteLine(code + " - " + country + " - " + state);
+        }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
