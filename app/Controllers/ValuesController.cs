@@ -19,6 +19,8 @@ namespace app.Controllers
             Console.WriteLine("Country: " + country);
             Console.WriteLine("State: " +state);
             HttpQueries.getAccessTokenByAuthCode(code);
+
+
         }
     }
 }

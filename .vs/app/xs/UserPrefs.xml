@@ -4,18 +4,16 @@
       <File FileName="app/Startup.cs" Line="46" Column="14" />
       <File FileName="app/Program.cs" />
       <File FileName="app/appsettings.Development.json" />
-      <File FileName="app/Controllers/ValuesController.cs" Line="17" Column="71" />
+      <File FileName="app/Controllers/ValuesController.cs" Line="18" Column="19" />
       <File FileName="app/appsettings.json" />
-      <File FileName="app/Config.cs" Line="1" Column="1" />
+      <File FileName="app/Config.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="app" expanded="True">
             <Node name="app" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="ValuesController.cs" selected="True" />
-              </Node>
+              <Node name="Dependencies" selected="True" />
             </Node>
           </Node>
         </State>
