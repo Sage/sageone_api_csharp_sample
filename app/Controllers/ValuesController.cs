@@ -18,8 +18,19 @@ namespace app.Controllers
             Console.WriteLine("Authorization Code: " + code);
             Console.WriteLine("Country: " + country);
             Console.WriteLine("State: " +state);
-            HttpQueries.getAccessTokenByAuthCode(code);
 
+            Task<KeyValuePair<string, string>> qryAccessToken = HttpQueries.getAccessTokenByAuthCode(code);
+            
+            qryAccessToken.Wait();
+
+            if (qryAccessToken.Result.Key == "accessToken") 
+            {
+                HttpQueries.queryCountries(qryAccessToken.Result.Key);
+            }
+            else 
+            {
+                
+            }
 
         }
     }

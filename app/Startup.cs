@@ -17,14 +17,16 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
-
+using Newtonsoft.Json.Linq;
 
 namespace app
 {
     public class HttpQueries
     {
-        public static async void getAccessTokenByAuthCode(String authCode)
-        {
+        public static async Task<KeyValuePair<string, string>> getAccessTokenByAuthCode(String authCode)
+        {   
+            KeyValuePair<string,string> responseContent = new KeyValuePair<string, string>("", "");
+            
             using (HttpClient client = new HttpClient())
             {
                 var dict = new Dictionary<string, string>();
@@ -51,19 +53,38 @@ namespace app
                         if (result != null &&
                             result.Length >= 50)
                         {
-                            Console.WriteLine("---\nBody: ");
-                            Console.WriteLine("\n" + result.ToString());
+                            // print the whole json response body
+                            // Console.WriteLine("---\nBody: \n" + result.ToString());
+                            
+                            JObject jsonResponse = JObject.Parse(result.ToString());
+
+                            string valError = (string)jsonResponse["error"];
+                            string valErrorDesc = (string)jsonResponse["error_description"];
+                            string valAccessToken = (string)jsonResponse["access_token"];
+
+                            if(valError.Equals("") && valErrorDesc.Equals(""))
+                            {
+                                // OK
+                                responseContent = new KeyValuePair<string, string>(responseContent.Key, "accessToken");
+                                responseContent = new KeyValuePair<string, string>(responseContent.Value, valAccessToken);
+                            }
+                            else
+                            {
+                                // Bad request
+                                responseContent = new KeyValuePair<string, string>(responseContent.Key, "Error");
+                                responseContent = new KeyValuePair<string, string>(responseContent.Value, valError + " - " + valErrorDesc);
+                            }
                         }
                     }
                 }
             }
 
-            
+            return responseContent;
         }
-        //public static async void queryCountries(String authCode)
-        //{
+         public static async void queryCountries(String accessToken)
+        {
             
-        //}
+        } 
     }
     public class Startup
     {
