@@ -13,9 +13,50 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace app
 {
+    public class HttpQueries
+    {
+        public static async void getAccessTokenByAuthCode(String authCode)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var dict = new Dictionary<string, string>();
+                dict.Add("client_id", Config.ClientId);
+                dict.Add("client_secret", Config.ClientSecret);
+                dict.Add("code", authCode);
+                dict.Add("grant_type", "authorization_code");
+                dict.Add("redirect_uri", Config.CallbackUrl);
+
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://oauth.accounting.sage.com/token")
+                {
+                    Content = new FormUrlEncodedContent(dict)
+                };
+
+                Console.WriteLine("\nAsk for AccessToken...");
+                using (HttpResponseMessage response = await client.SendAsync(request))
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        string result = await content.ReadAsStringAsync();
+                        Console.WriteLine("---\nStatusCode: " + response.StatusCode);
+                        Console.WriteLine("---\nHeaders: " + response.Headers);
+
+                        if (result != null &&
+                            result.Length >= 50)
+                        {
+                            Console.WriteLine("---\nBody: ");
+                            Console.WriteLine("\n" + result.ToString());
+                        }
+                    }
+                }
+            }
+        }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -52,16 +93,16 @@ namespace app
 
             //app.UseHttpsRedirection();
             app.UseMvc();
-/*
-            String path = Path.Combine("/dist", "wwwroot", "images");
-            Console.WriteLine("####: " + path);
+            /*
+                        String path = Path.Combine("/dist", "wwwroot", "images");
+                        Console.WriteLine("####: " + path);
 
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = new PhysicalFileProvider(path),
-                RequestPath = "/MyImages"
-            });
-  */          
+                        app.UseDirectoryBrowser(new DirectoryBrowserOptions
+                        {
+                            FileProvider = new PhysicalFileProvider(path),
+                            RequestPath = "/MyImages"
+                        });
+              */
         }
     }
 }

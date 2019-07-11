@@ -16,4 +16,4 @@
 # End of https://www.gitignore.io/api/dotnetcore
 
 # exclude the used client config file
-Config.cs
+*/Config.cs
