@@ -12,24 +12,26 @@ namespace app.Controllers
     {
         // GET auth/callback
         [HttpGet]
-        public void GetData(string code, string country, string state) 
+        public void GetData(string code, string country, string state)
         {
             Console.WriteLine("*** Callback ***");
             Console.WriteLine("Authorization Code: " + code);
             Console.WriteLine("Country: " + country);
-            Console.WriteLine("State: " +state);
+            Console.WriteLine("State: " + state);
 
             Task<KeyValuePair<string, string>> qryAccessToken = HttpQueries.getAccessTokenByAuthCode(code);
-            
+
             qryAccessToken.Wait();
 
-            if (qryAccessToken.Result.Key == "accessToken") 
+            if (qryAccessToken.Result.Key == "accessToken")
             {
-                HttpQueries.queryCountries(qryAccessToken.Result.Key);
+                Console.WriteLine("\nGot AccessToken, query sample endpoint\n");
+                HttpQueries.queryCountries(qryAccessToken.Result.Value, "https://api.accounting.sage.com/v3.1/countries");
             }
-            else 
+            else
             {
-                
+                Console.WriteLine("\n" + qryAccessToken.Result.Key + ": " + qryAccessToken.Result.Value);
+                Console.WriteLine("\nGot no AccessToken from authorization server\n");
             }
 
         }

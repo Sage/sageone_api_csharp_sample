@@ -58,9 +58,9 @@ namespace app
                             
                             JObject jsonResponse = JObject.Parse(result.ToString());
 
-                            string valError = (string)jsonResponse["error"];
-                            string valErrorDesc = (string)jsonResponse["error_description"];
-                            string valAccessToken = (string)jsonResponse["access_token"];
+                            string valError = (string)jsonResponse["error"] ?? "";
+                            string valErrorDesc = (string)jsonResponse["error_description"] ?? "";
+                            string valAccessToken = (string)jsonResponse["access_token"] ?? "";
 
                             if(valError.Equals("") && valErrorDesc.Equals(""))
                             {
@@ -72,7 +72,7 @@ namespace app
                             {
                                 // Bad request
                                 responseContent = new KeyValuePair<string, string>(responseContent.Key, "Error");
-                                responseContent = new KeyValuePair<string, string>(responseContent.Value, valError + " - " + valErrorDesc);
+                                responseContent = new KeyValuePair<string, string>(responseContent.Value, valError + ", " + valErrorDesc);
                             }
                         }
                     }
@@ -81,10 +81,34 @@ namespace app
 
             return responseContent;
         }
-         public static async void queryCountries(String accessToken)
+         public static async void queryCountries(String accessToken, string endpointUrl)
         {
             
-        } 
+        using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                
+
+                Console.WriteLine("\nAsk api endpoint...");
+                using (HttpResponseMessage response = await client.GetAsync(endpointUrl))
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        string result = await content.ReadAsStringAsync();
+                        Console.WriteLine("---\nStatusCode: " + response.StatusCode);
+                        Console.WriteLine("---\nHeaders: " + response.Headers);
+
+                        if (result != null &&
+                            result.Length >= 50)
+                        {
+                            // print the whole json response body
+                            Console.WriteLine("---\nBody: \n" + result.ToString());
+                            
+                        }
+                    }
+                }
+            }
+        }
     }
     public class Startup
     {
