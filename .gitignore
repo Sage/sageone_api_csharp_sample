@@ -17,3 +17,6 @@
 
 # exclude the used client config file
 */Config.cs
+
+# exclude visual studio settings folder
+.vs
