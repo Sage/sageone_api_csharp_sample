@@ -86,7 +86,7 @@ namespace app
             
         using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
                 
 
                 Console.WriteLine("\nAsk api endpoint...");
