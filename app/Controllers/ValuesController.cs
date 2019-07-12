@@ -14,23 +14,35 @@ namespace app.Controllers
         [HttpGet]
         public void GetData(string code, string country, string state)
         {
+            SageAccountingOAuth sageAuth = new SageAccountingOAuth();
+
             Console.WriteLine("*** Callback ***");
             Console.WriteLine("Authorization Code: " + code);
             Console.WriteLine("Country: " + country);
             Console.WriteLine("State: " + state);
 
-            Task<KeyValuePair<string, string>> qryAccessToken = HttpQueries.getAccessTokenByAuthCode(code);
+            Task t = sageAuth.requestAccessTokenByAuthCode(code);
+            t.Wait();
+         
+/*             for(int i = 305; i>0; i--)
+            {   
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Write(".." + i);
+                if(i % 20 == 0) {
+                    Console.Write("\n");
+                }
+            }
 
-            qryAccessToken.Wait();
+            t = sageAuth.requestNewAccessTokenByRefreshToken();
+            t.Wait(); */
 
-            if (qryAccessToken.Result.Key == "accessToken")
+            if (sageAuth.getAuthState().Equals("valid"))
             {
-                Console.WriteLine("\nGot AccessToken, query sample endpoint\n");
-                HttpQueries.queryCountries(qryAccessToken.Result.Value, "https://api.accounting.sage.com/v3.1/countries");
+                SageAccountingWebRequest.queryAccountingApi(sageAuth, "https://api.accounting.sage.com/v3.1/countries");
             }
             else
             {
-                Console.WriteLine("\n" + qryAccessToken.Result.Key + ": " + qryAccessToken.Result.Value);
+                Console.WriteLine("\n" + sageAuth.getAuthState());
                 Console.WriteLine("\nGot no AccessToken from authorization server\n");
             }
 

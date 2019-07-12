@@ -19,6 +19,8 @@ namespace app
                 .UseUrls("http://0.0.0.0:8080/")
                 .Build()
                 .Run();
+
+                
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
