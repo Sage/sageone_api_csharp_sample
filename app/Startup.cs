@@ -50,9 +50,9 @@ namespace app
                 app.UseHsts();
             }
 
-            app.UseFileServer();
+            //app.UseFileServer();
             app.UseStaticFiles();
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
 
 
             //app.UseHttpsRedirection();

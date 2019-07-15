@@ -1,0 +1,83 @@
+﻿@page
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Sage Accounting API Sample App - PHP</title>
+    <link type="text/css" rel="stylesheet" href="css/sample_app.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <a id="logo" href="/">Sage Accounting API Sample App - C#</a>
+      </div>
+    </header>
+    <div class="container">
+      <div class="center well">
+        <div class="guide">
+            <h3>Step by Step Guide</h3>
+            <ol>
+              <li>
+                Sign up for a developer account <a href="https://developerselfservice.sageone.com/" target="_blank">here</a>.
+              </li>
+              <li>
+                Create a client application. Enter <span class="pre">http://<?php echo $_SERVER['HTTP_HOST'] ?>/callback.php</span> as the callback URL.
+              </li>
+              <li>
+                Put client ID, secret and callback URL into <span class="pre">config/client_application.yml</span>.
+              </li>
+              <li>Create trial user account. Click on one of the flag links at the bottom.</li>
+              <li><a href="<?php echo $apiClient->authorizationEndpoint(); ?>">Authorize</a> API access.</li>
+              <li>Make your first API call.</li>
+              <li>Be happy!</li>
+            </ol>
+          </div>
+          <footer>
+            <div>Sign Up for Trial Account - Accounting:
+              <ul class="flags">
+                <li><a href="https://mysageone.ca.sageone.com/signup/new?product=accounts_extra" target="_blank">🇨🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-DE&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=de-DE" target="_blank">🇩🇪</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-ES&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=es-ES" target="_blank">🇪🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-FR&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=fr-FR" target="_blank">🇫🇷</a></li>
+                <li><a href="https://app.sageone.com/signup?product=accounting" target="_blank">🇬🇧/🇮🇪</a></li>
+                <li><a href="https://mysageone.na.sageone.com/signup/new?tier_code=SageOne-Accounting-US&tier_rate_plan_code=Monthly&currency_code=USD&type=try&locale=en-US" target="_blank">🇺🇸</a></li>
+              </ul>
+            </div>
+            <div>Sign Up for Trial Account - Start:
+              <ul class="flags">
+                <li><a href="https://mysageone.ca.sageone.com/signup/new?product=micro" target="_blank">🇨🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-DE&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=de-DE" target="_blank">🇩🇪</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-ES&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=es-ES" target="_blank">🇪🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-FR&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=fr-FR" target="_blank">🇫🇷</a></li>
+                <li><a href="https://app.sageone.com/signup?product=micro" target="_blank">🇬🇧/🇮🇪</a></li>
+                <li><a href="https://mysageone.na.sageone.com/signup/new?tier_code=SageOne-Start-US&tier_rate_plan_code=Monthly&currency_code=USD&type=try&locale=en-US" target="_blank">🇺🇸</a></li>
+              </ul>
+            </div>
+            <div>User Account Login:
+              <ul class="flags">
+                <li><a href="https://mysageone.ca.sageone.com/login?locale=en" target="_blank">🇨🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/login?locale=de-DE" target="_blank">🇩🇪</a></li>
+                <li><a href="https://central.eu.sageone.com/login?locale=es-ES" target="_blank">🇪🇦</a></li>
+                <li><a href="https://central.eu.sageone.com/login?locale=fr-FR" target="_blank">🇫🇷</a></li>
+                <li><a href="https://app.sageone.com/login" target="_blank">🇬🇧/🇮🇪</a></li>
+                <li><a href="https://mysageone.na.sageone.com/signin" target="_blank">🇺🇸</a></li>
+              </ul>
+            </div>
+            <div>User Account Login:
+              <ul>
+                <li><a href="https://www.sageone.com/?clear" target="_blank" title="Show country selection (the 'flag' page) again">Reset Country Cookie</a></li>
+              </ul>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </body>
+  </html>
+  
+          
