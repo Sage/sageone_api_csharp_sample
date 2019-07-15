@@ -2857,5 +2857,16 @@
     "CSharpLanguageVersion": 703
   },
   "RootNamespace": "app",
-  "Documents": []
+  "Documents": [
+    {
+      "FilePath": "Pages/Index.cshtml",
+      "TargetPath": "Pages/Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Pages/Details.cshtml",
+      "TargetPath": "Pages/Details.cshtml",
+      "FileKind": "mvc"
+    }
+  ]
 }

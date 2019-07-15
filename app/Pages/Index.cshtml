@@ -1,83 +1,163 @@
 ﻿@page
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8"/>
-    <title>Sage Accounting API Sample App - PHP</title>
-    <link type="text/css" rel="stylesheet" href="css/sample_app.css">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <a id="logo" href="/">Sage Accounting API Sample App - C#</a>
-      </div>
-    </header>
-    <div class="container">
-      <div class="center well">
-        <div class="guide">
-            <h3>Step by Step Guide</h3>
-            <ol>
-              <li>
-                Sign up for a developer account <a href="https://developerselfservice.sageone.com/" target="_blank">here</a>.
-              </li>
-              <li>
-                Create a client application. Enter <span class="pre">http://<?php echo $_SERVER['HTTP_HOST'] ?>/callback.php</span> as the callback URL.
-              </li>
-              <li>
-                Put client ID, secret and callback URL into <span class="pre">config/client_application.yml</span>.
-              </li>
-              <li>Create trial user account. Click on one of the flag links at the bottom.</li>
-              <li><a href="<?php echo $apiClient->authorizationEndpoint(); ?>">Authorize</a> API access.</li>
-              <li>Make your first API call.</li>
-              <li>Be happy!</li>
-            </ol>
-          </div>
-          <footer>
-            <div>Sign Up for Trial Account - Accounting:
-              <ul class="flags">
-                <li><a href="https://mysageone.ca.sageone.com/signup/new?product=accounts_extra" target="_blank">🇨🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-DE&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=de-DE" target="_blank">🇩🇪</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-ES&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=es-ES" target="_blank">🇪🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Accounting-FR&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=fr-FR" target="_blank">🇫🇷</a></li>
-                <li><a href="https://app.sageone.com/signup?product=accounting" target="_blank">🇬🇧/🇮🇪</a></li>
-                <li><a href="https://mysageone.na.sageone.com/signup/new?tier_code=SageOne-Accounting-US&tier_rate_plan_code=Monthly&currency_code=USD&type=try&locale=en-US" target="_blank">🇺🇸</a></li>
-              </ul>
-            </div>
-            <div>Sign Up for Trial Account - Start:
-              <ul class="flags">
-                <li><a href="https://mysageone.ca.sageone.com/signup/new?product=micro" target="_blank">🇨🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-DE&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=de-DE" target="_blank">🇩🇪</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-ES&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=es-ES" target="_blank">🇪🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/signup/new?tier_code=SageOne-Start-FR&tier_rate_plan_code=Monthly&type=try&currency_code=EUR&locale=fr-FR" target="_blank">🇫🇷</a></li>
-                <li><a href="https://app.sageone.com/signup?product=micro" target="_blank">🇬🇧/🇮🇪</a></li>
-                <li><a href="https://mysageone.na.sageone.com/signup/new?tier_code=SageOne-Start-US&tier_rate_plan_code=Monthly&currency_code=USD&type=try&locale=en-US" target="_blank">🇺🇸</a></li>
-              </ul>
-            </div>
-            <div>User Account Login:
-              <ul class="flags">
-                <li><a href="https://mysageone.ca.sageone.com/login?locale=en" target="_blank">🇨🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/login?locale=de-DE" target="_blank">🇩🇪</a></li>
-                <li><a href="https://central.eu.sageone.com/login?locale=es-ES" target="_blank">🇪🇦</a></li>
-                <li><a href="https://central.eu.sageone.com/login?locale=fr-FR" target="_blank">🇫🇷</a></li>
-                <li><a href="https://app.sageone.com/login" target="_blank">🇬🇧/🇮🇪</a></li>
-                <li><a href="https://mysageone.na.sageone.com/signin" target="_blank">🇺🇸</a></li>
-              </ul>
-            </div>
-            <div>User Account Login:
-              <ul>
-                <li><a href="https://www.sageone.com/?clear" target="_blank" title="Show country selection (the 'flag' page) again">Reset Country Cookie</a></li>
-              </ul>
-            </div>
-          </footer>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sage Accounting API Sample App - PHP</title>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap">
+  <link type="text/css" rel="stylesheet" href="sample_app.css">
+</head>
+
+<body>
+  <div id="guide" class="guide">
+    <h1 class="title">Let's get started</h1>
+
+    <ol class="steps">
+      <li class="step">
+        <h2 class="step__title">
+          <a href="https://developerselfservice.sageone.com/" target="_blank">Sign up for a Sage developer account</a>
+        </h2>
+      </li>
+      <li class="step">
+        <h2 class="step__title">
+          <a href="" target="_blank">Create a client application</a>
+        </h2>
+        <div class="step__body">
+          Enter the following as the callback URL:<br />
+          <!--<code>http://<?php echo $_SERVER['HTTP_HOST'] ?>/callback.php</code>-->
+        </div>
+      </li>
+      <li class="step">
+        <h2 class="step__title">
+          Copy the Client Id and Client Secret into:
+        </h2>
+        <div class="step__body">
+          <code>config/client_application.yml</code>
+        </div>
+      </li>
+      <li class="step">
+        <h2 class="step__title">
+          <a href="https://sage.com/freetrial" target="_blank">Sign up for a free product trial</a>
+        </h2>
+      </li>
+      <li class="step">
+        <h2 class="step__title">
+          <a href="<?php echo $apiClient->authorizationEndpoint(); ?>">Authorize API access</a>
+        </h2>
+      </li>
+      <li class="step">
+        <h2 class="step__title">
+          Make your first API call
+        </h2>
+      </li>
+    </ol>
+  </div>
+  <div class="main">
+
+    <form id="request" class="request" action="api_request.php" method="post">
+
+      <div class="field">
+        <label class="field__label">Access Token</label>
+        <p id="timer" class="field__help">...</p>
+        <div class="field__body">
+          <input class="field__input" value="<?php echo $token ?>" required readonly />
+          <a class="button" href="/refresh_token.php">Refresh Token</a>
         </div>
       </div>
-    </body>
-  </html>
-  
-          
+<!--
+      <script>
+        // Token expiry timer
+        (function () {
+          var timer = document.querySelector('#timer');
+          var input = timer.closest('.field').querySelector('.field__input');
+          var refresh = timer.closest('.field').querySelector('.button');
+          var expires = new Date();
+          expires.setSeconds(expires.getSeconds() + <? php echo $expiresIn ?>);
+
+          function updateSeconds() {
+            var now = Date.now();
+
+            if (expires > now) {
+              timer.innerHTML = 'Expires in <strong>' + Math.round((expires - now) / 1000) + '</strong> seconds';
+              timer.classList.remove('is-error');
+              input.classList.remove('is-invalid');
+              refresh.classList.remove('is-destructive');
+            }
+            else {
+              timer.innerHTML = 'Expired <strong>' + Math.round((now - expires) / 1000) + '</strong> seconds ago';
+              timer.classList.add('is-error');
+              input.classList.add('is-invalid');
+              refresh.classList.add('is-destructive');
+            }
+          }
+
+          updateSeconds();
+
+          setInterval(updateSeconds, 1000);
+        }());
+      </script>
+-->
+      <div class="field">
+        <label class="field__label" for="http_verb">Request Method</label>
+        <div class="field__body">
+          <select class="field__input" id="http_verb" name="http_verb">
+            <option value="get">GET</option>
+            <option value="post">POST</option>
+            <option value="put">PUT</option>
+            <option value="delete">DELETE</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="resource">Request Endpoint</label>
+        <p class="field__help">
+          https://api.accounting.sage.com/v3.1/<strong>&lt;Resource&gt;</strong>
+        </p>
+        <div class="field__body">
+          <input class="field__input" list="resources" value="contacts" id="resource" name="resource" required />
+          <datalist id="resources">
+            <option>contacts</option>
+            <option>oranges</option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="post_data">Request Body</label>
+        <p class="field__help">
+          Example: {"contact": { "contact_type_ids": ["CUSTOMER"], "name": "Joe Bloggs"}}
+        </p>
+        <div class="field__body">
+          <textarea class="field__input" id="post_data" name="post_data"></textarea>
+        </div>
+      </div>
+
+      <div class="form__button">
+        <button class="button">Make Request</button>
+      </div>
+    </form>
+    <div id="response" class="response">
+      <div class="field">
+        <label class="field__label">Response Status</label>
+        <p class="field__help">
+          Returned in <strong><?php echo $response->getDuration(); ?></strong> seconds
+        </p>
+        <div class="field__body">
+          <input class="field__input" readonly value="<?php echo $response->getStatus(); ?>" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label">Response Body</label>
+        <div class="field__body">
+          <textarea class="field__input response__body" readonly></textarea>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>
