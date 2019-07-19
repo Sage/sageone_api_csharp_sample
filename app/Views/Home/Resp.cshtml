@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="guide" class="guide">
+    <h1 class="title">Let's get started</h1>
+
+    <ol class="steps">
+        <li class="step">
+            <h2 class="step__title">
+                <a href="https://developerselfservice.sageone.com/" target="_blank">Sign up for a Sage developer account</a>
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                <a href="" target="_blank">Create a client application</a>
+            </h2>
+            <div class="step__body">
+                Enter the following as the callback URL:<br />
+                <code>http://<?php echo $_SERVER['HTTP_HOST'] ?>/callback.php</code>
+            </div>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                Copy the Client Id and Client Secret into:
+            </h2>
+            <div class="step__body">
+                <code>config/client_application.yml</code>
+            </div>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                <a href="https://sage.com/freetrial" target="_blank">Sign up for a free product trial</a>
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                <a href="<?php echo $apiClient->authorizationEndpoint(); ?>">Authorize API access</a>
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                Make your first API call
+            </h2>
+        </li>
+    </ol>
+</div>
+
+<div class="main">
+    <form id="request" class="request">
+
+        <div class="field">
+            <label class="field__label">Access Token</label>
+            <p id="timer" class="field__help">...</p>
+            <div class="field__body">
+                <input class="field__input" value="<?php echo $token ?>" required readonly />
+                <a class="button">Refresh Token</a>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="field__label" for="http_verb">Request Method</label>
+            <div class="field__body">
+                <select class="field__input" id="http_verb" name="http_verb">
+                    <option value="get">GET</option>
+                    <option value="post">POST</option>
+                    <option value="put">PUT</option>
+                    <option value="delete">DELETE</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="field__label" for="resource">Request Endpoint</label>
+            <p class="field__help">
+                https://api.accounting.sage.com/v3.1/<strong>&lt;Resource&gt;</strong>
+            </p>
+            <div class="field__body">
+                <input class="field__input" list="resources" value="contacts" id="resource" name="resource" required />
+                <datalist id="resources">
+                    <option>contacts</option>
+                    <option>oranges</option>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="field__label" for="post_data">Request Body</label>
+            <p class="field__help">
+                Example: {"contact": { "contact_type_ids": ["CUSTOMER"], "name": "Joe Bloggs"}}
+            </p>
+            <div class="field__body">
+                <textarea class="field__input" id="post_data" name="post_data"></textarea>
+            </div>
+        </div>
+
+        <div class="form__button">
+            <button class="button" onClick="showResponse()">Make Request</button>
+        </div>
+    </form>
+    <div id="response" class="response">
+        <div class="field">
+            <label class="field__label">Response Status</label>
+            <p class="field__help">
+                Returned in <strong><?php echo $response->getDuration(); ?></strong> seconds
+            </p>
+            <div class="field__body">
+                <input class="field__input" readonly value="<?php echo $response->getStatus(); ?>" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="field__label">Response Body</label>
+            <div class="field__body">
+                <textarea class="field__input response__body" readonly><?php
+        echo json_encode($response->getJSON(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+      ?></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+
