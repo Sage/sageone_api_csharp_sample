@@ -5,7 +5,7 @@ window.onload = function () {
     var req = document.getElementById('response')
     req.style.visibility = 'hidden' */
 
-    document.getElementById("callbackLocation").innerHTML = "<code>" + window.location.href + "auth/callback</code>"; 
+    // document.getElementById("callbackLocation").innerHTML = "<code>" + window.location.href + "auth/callback</code>"; 
 };
 
 function authorizationEndpoint() {
@@ -23,5 +23,5 @@ function authorizationEndpoint() {
 function getCallbackLocation() {
 
     console.log(window.location.href)
-    return getCallbackLocation.href + "auth/callback";
+    // return window.location.href + "auth/callback";
 }

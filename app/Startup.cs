@@ -28,7 +28,7 @@ namespace app
 {
     public class Startup
     {
-         public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -39,6 +39,16 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = false;
+
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                //options.Cookie.SameSite = SameSiteMode.Strict;
+                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
 
             services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -46,10 +56,10 @@ namespace app
                 .AddCookie(o => o.LoginPath = new PathString("/login"))
                 .AddOAuth("oauth2", "Sage Accounting", o =>         // http://localhost:5000/login?authscheme=oauth2
                 {
-                    o.ClientId = "8788bc0c-f448-45c0-8612-898df4a5e92d/ddca9e3b-12d0-427f-b7fe-b2f39009ab2f";
-                    o.ClientSecret = "uRE1<H=_Rza*m._C(fX1";
+                    o.ClientId = Config.ClientId;
+                    o.ClientSecret = Config.ClientSecret;
                     o.CallbackPath = new PathString("/auth/callback");
-                    o.AuthorizationEndpoint = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
+                    o.AuthorizationEndpoint = Config.AuthorizationEndpoint;
                     o.TokenEndpoint = "https://oauth.accounting.sage.com/token";
                     o.UserInformationEndpoint = "https://api.accounting.sage.com/v3.1/user";//"https://api.accounting.sage.com/v3.1/countries";
                     //o.ClaimsIssuer = "IdentityServer";
@@ -66,6 +76,7 @@ namespace app
                     // o.Scope.Add("openid");
                     // o.Scope.Add("profile");
                     // o.Scope.Add("email");
+
                     o.Scope.Add("full_access");
                     o.Events = new OAuthEvents
                     {
@@ -73,6 +84,7 @@ namespace app
                         OnCreatingTicket = async context =>
                         {
                             // Get the user
+
                             var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint); // Userinformationendpoint
                             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken); // Bearer
                             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -81,8 +93,23 @@ namespace app
                             response.EnsureSuccessStatusCode();
 
                             Console.WriteLine("***" + (string)await response.Content.ReadAsStringAsync());
+
+
                             JObject jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
                             context.RunClaimActions(jsonResponse);
+
+                            context.HttpContext.Session.SetString("access_token", context.AccessToken);
+                            context.HttpContext.Session.SetString("refresh_token", context.RefreshToken);
+                            context.HttpContext.Session.SetString("token_type", context.TokenType);
+                            context.HttpContext.Session.SetString("expires_at", context.ExpiresIn.ToString());
+
+                            Console.WriteLine("<ConfigureServices -> event\n");
+                            foreach (var k in context.HttpContext.Session.Keys)
+                            {
+                                Console.WriteLine("*** " + k.ToString() + " -> " + context.HttpContext.Session.GetString(k));
+                            }
+                            Console.WriteLine(">\n");
+
                         }
                     };
                 });
@@ -102,9 +129,12 @@ namespace app
                 app.UseHsts();
             }
 
+            
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
-            // app.UseCookiePolicy();
+            app.UseSession();
+
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
             app.UseMvc(routes =>
@@ -137,7 +167,16 @@ namespace app
                         await response.WriteAsync("<a href=\"?authscheme=" + provider.Name + "\">" + (provider.DisplayName ?? "(suppressed)") + "</a><br>");
                     }
                     await response.WriteAsync("</body></html>");
+                    response.HttpContext.Session.SetString("startup -> login", "hijklmn");
+
+                    foreach (var k in response.HttpContext.Session.Keys)
+                    {
+                        Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
+                    }
+                    Console.WriteLine(">\n");
+
                 });
+
             });
             // Refresh the access token
             app.Map("/refresh_token", signinApp =>
@@ -180,6 +219,8 @@ namespace app
                         return;
                     }
 
+
+
                     var options = await GetOAuthOptionsAsync(context, currentAuthType);
 
                     var pairs = new Dictionary<string, string>()
@@ -213,9 +254,79 @@ namespace app
 
                     await PrintRefreshedTokensAsync(response, payload, authProperties);
 
+                    response.HttpContext.Session.SetString("access_token", await context.GetTokenAsync("access_token"));
+                    response.HttpContext.Session.SetString("refresh_token", await context.GetTokenAsync("refresh_token"));
+                    response.HttpContext.Session.SetString("token_type", await context.GetTokenAsync("token_type"));
+                    response.HttpContext.Session.SetString("expires_at", await context.GetTokenAsync("expires_at"));
+
+                    Console.WriteLine("<startup -> refresh_token");
+                    foreach (var k in response.HttpContext.Session.Keys)
+                    {
+                        Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
+                    }
+                    Console.WriteLine(">\n");
+
                     return;
                 });
             });
+
+            app.Run(async context =>
+                        {
+                            // Setting DefaultAuthenticateScheme causes User to be set
+                            var user = context.User;
+
+                            // This is what [Authorize] calls
+                            // var user = await context.AuthenticateAsync();
+
+                            // This is what [Authorize(ActiveAuthenticationSchemes = MicrosoftAccountDefaults.AuthenticationScheme)] calls
+                            // var user = await context.AuthenticateAsync(MicrosoftAccountDefaults.AuthenticationScheme);
+
+                            // Deny anonymous request beyond this point.
+                            if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
+                            {
+                                // This is what [Authorize] calls
+                                // The cookie middleware will handle this and redirect to /login
+                                await context.ChallengeAsync();
+
+                                // This is what [Authorize(ActiveAuthenticationSchemes = MicrosoftAccountDefaults.AuthenticationScheme)] calls
+                                // await context.ChallengeAsync(MicrosoftAccountDefaults.AuthenticationScheme);
+
+                                return;
+                            }
+
+                            // Display user information
+                            var response = context.Response;
+                            response.ContentType = "text/html";
+                            await response.WriteAsync("<html><body>");
+                            await response.WriteAsync("Hello " + (context.User.Identity.Name ?? "anonymous") + "<br>");
+                            foreach (var claim in context.User.Claims)
+                            {
+                                await response.WriteAsync(claim.Type + ": " + claim.Value + "<br>");
+                            }
+
+                            await response.WriteAsync("Tokens:<br>");
+
+                            await response.WriteAsync("Access Token: " + await context.GetTokenAsync("access_token") + "<br>");
+                            await response.WriteAsync("Refresh Token: " + await context.GetTokenAsync("refresh_token") + "<br>");
+                            await response.WriteAsync("Token Type: " + await context.GetTokenAsync("token_type") + "<br>");
+                            await response.WriteAsync("expires_at: " + await context.GetTokenAsync("expires_at") + "<br>");
+                            await response.WriteAsync("<a href=\"/logout\">Logout</a><br>");
+                            await response.WriteAsync("<a href=\"/refresh_token\">Refresh Token</a><br>");
+                            await response.WriteAsync("</body></html>");
+
+                            response.HttpContext.Session.SetString("access_token", await context.GetTokenAsync("access_token"));
+                            response.HttpContext.Session.SetString("refresh_token", await context.GetTokenAsync("refresh_token"));
+                            response.HttpContext.Session.SetString("token_type", await context.GetTokenAsync("token_type"));
+                            response.HttpContext.Session.SetString("expires_at", await context.GetTokenAsync("expires_at"));
+
+                            Console.WriteLine("<startup -> ##################################################");
+                            foreach (var k in response.HttpContext.Session.Keys)
+                            {
+                                Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
+                            }
+                            Console.WriteLine(">\n");
+
+                        });
 
             // Sign-out to remove the user cookie.
             app.Map("/logout", signoutApp =>
@@ -246,6 +357,9 @@ namespace app
                 });
             });
         }
+
+
+
         private async Task HandleOnRemoteFailure(RemoteFailureContext context)
         {
             context.Response.StatusCode = 500;
