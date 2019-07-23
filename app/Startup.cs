@@ -130,7 +130,7 @@ namespace app
                 app.UseHsts();
             }
 
-            
+
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
@@ -146,39 +146,14 @@ namespace app
             });
 
             app.Map("/login", signinApp =>
-            {
-                signinApp.Run(async context =>
-                {
-                    var authType = context.Request.Query["authscheme"];
-                    if (!string.IsNullOrEmpty(authType))
-                    {
-                        // By default the client will be redirect back to the URL that issued the challenge (/login?authtype=foo),
-                        // send them to the home page instead (/).
-                        await context.ChallengeAsync(authType, new AuthenticationProperties() { RedirectUri = "/" });
-                        return;
-                    }
+               {
+                   signinApp.Run(async context =>
+                   {
+                       await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
+                       return;
+                   });
 
-                    var response = context.Response;
-                    response.ContentType = "text/html";
-                    await response.WriteAsync("<html><body>");
-                    await response.WriteAsync("Choose an authentication scheme: <br>");
-                    var schemeProvider = context.RequestServices.GetRequiredService<IAuthenticationSchemeProvider>();
-                    foreach (var provider in await schemeProvider.GetAllSchemesAsync())
-                    {
-                        await response.WriteAsync("<a href=\"?authscheme=" + provider.Name + "\">" + (provider.DisplayName ?? "(suppressed)") + "</a><br>");
-                    }
-                    await response.WriteAsync("</body></html>");
-                    response.HttpContext.Session.SetString("startup -> login", "hijklmn");
-
-                    foreach (var k in response.HttpContext.Session.Keys)
-                    {
-                        Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
-                    }
-                    Console.WriteLine(">\n");
-
-                });
-
-            });
+               });
             // Refresh the access token
             app.Map("/refresh_token", signinApp =>
             {
@@ -253,7 +228,9 @@ namespace app
                     }
                     await context.SignInAsync(user, authProperties);
 
-                    await PrintRefreshedTokensAsync(response, payload, authProperties);
+
+
+                    // await PrintRefreshedTokensAsync(response, payload, authProperties);
 
                     response.HttpContext.Session.SetString("access_token", await context.GetTokenAsync("access_token"));
                     response.HttpContext.Session.SetString("refresh_token", await context.GetTokenAsync("refresh_token"));
@@ -266,6 +243,8 @@ namespace app
                         Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
                     }
                     Console.WriteLine(">\n");
+
+                    context.Response.Redirect(Config.BaseUrl + "/");
 
                     return;
                 });

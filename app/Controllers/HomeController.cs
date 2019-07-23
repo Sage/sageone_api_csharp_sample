@@ -41,17 +41,17 @@ namespace app.Controllers
             
             if(session_access_token.Length >0 && session_api_response_json.Length>0)
             {
-                Console.WriteLine("-> resp");
+                Console.WriteLine("redirect -> resp");
                 return Redirect(Config.BaseUrl + "/home/resp");
             }
             else if (session_access_token.Length >0 && session_api_response_json.Length==0)
             {
-                Console.WriteLine("-> req");
+                Console.WriteLine("redirect -> req");
                 return Redirect(Config.BaseUrl + "/home/req");
             }
             else 
             {
-                Console.WriteLine("-> guide");
+                Console.WriteLine("redirect -> guide");
                 return Redirect(Config.BaseUrl + "/home/guide");
             }
 

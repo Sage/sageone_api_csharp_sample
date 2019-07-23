@@ -36,7 +36,7 @@
         </li>
         <li class="step">
             <h2 class="step__title">
-                <a href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login?authscheme=oauth2">Authorize API access</a><br />
+                <a href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login">Authorize API access</a><br />
             </h2>
         </li>
         <li class="step">
@@ -55,7 +55,7 @@
             <p id="timer" class="field__help">...</p>
             <div class="field__body">
                 <input class="field__input" value="@HttpContextAccessor.HttpContext.Session.GetString("access_token")" required readonly />
-                <a class="button">Refresh Token</a>
+                <a class="button" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/refresh_token/">Refresh Token</a>
             </div>
         </div>
 
