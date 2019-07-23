@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -53,7 +55,7 @@
             <label class="field__label">Access Token</label>
             <p id="timer" class="field__help">...</p>
             <div class="field__body">
-                <input class="field__input" value="<?php echo $token ?>" required readonly />
+                <input class="field__input" value="@HttpContextAccessor.HttpContext.Session.GetString("access_token")" required readonly />
                 <a class="button">Refresh Token</a>
             </div>
         </div>

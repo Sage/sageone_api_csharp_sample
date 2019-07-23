@@ -51,6 +51,7 @@ namespace app
             });
 
             services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // identityserver
                 .AddCookie(o => o.LoginPath = new PathString("/login"))
