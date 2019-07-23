@@ -1,9 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Request";
 }
-
 <div id="guide" class="guide">
     <h1 class="title">Let's get started</h1>
 
@@ -19,7 +18,7 @@
             </h2>
             <div class="step__body">
                 Enter the following as the callback URL:<br />
-                <code>http://<?php echo $_SERVER['HTTP_HOST'] ?>/callback.php</code>
+                <code>@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/auth/callback</code><br />
             </div>
         </li>
         <li class="step">
@@ -37,7 +36,7 @@
         </li>
         <li class="step">
             <h2 class="step__title">
-                <a href="<?php echo $apiClient->authorizationEndpoint(); ?>">Authorize API access</a>
+                <a href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login?authscheme=oauth2">Authorize API access</a><br />
             </h2>
         </li>
         <li class="step">
