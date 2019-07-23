@@ -45,6 +45,7 @@ namespace app.Controllers
 
         public IActionResult Guide()
         {   
+            HttpContext.Session.SetString("BaseUrl", Config.BaseUrl);
             HttpContext.Session.SetString("HomeController -> Guide", "event!!!!!!");
             // HttpContext.Session.SetString("accessTokenController", "abcdefg");
             // oAuthContent.testVal1 = HttpContext.Session.GetString("accessTokenEvent") ?? "event->null";

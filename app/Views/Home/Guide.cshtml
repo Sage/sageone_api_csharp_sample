@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
     ViewData["Title"] = "Privacy Policy";
 }
 <div id="guide" class="guide">
@@ -16,8 +18,7 @@
             </h2>
             <div class="step__body">
                 Enter the following as the callback URL:<br />
-                <code>http://192.168.99.100:8080/auth/callback</code><br />
-                 <br />
+                <code>@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/auth/callback</code><br />
             </div>
         </li>
         <li class="step">
@@ -35,7 +36,7 @@
         </li>
         <li class="step">
             <h2 class="step__title">
-                <a href="">Authorize API access</a><br />
+                <a href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login?authscheme=oauth2">Authorize API access</a><br />
             </h2>
         </li>
         <li class="step">
@@ -46,5 +47,5 @@
     </ol>
 </div>
 
-<div class="main"><div class="request is-centered"><a class="button is-centered" href="">Authorize API access</a></div></div>
+<div class="main"><div class="request is-centered"><a class="button is-centered" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login?authscheme=oauth2">Authorize API access</a></div></div>
 
