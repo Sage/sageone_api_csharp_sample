@@ -22,8 +22,9 @@ namespace app.Controllers
         {
              // SageOAuthModel oAuthContent = new SageOAuthModel();
              // oAuthContent.callbackUrl = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1&response_type=code&client_id=" + Config.ClientId + "&redirect_uri=https://localhost:5001/auth/callback&scope=full_access&state=1234567";
-             UrlAuthorizeApiAccess = Config.BaseUrl + "/login?authscheme=oauth2";
-             AccessToken = "abcd";
+            UrlAuthorizeApiAccess = Config.BaseUrl + "/login?authscheme=oauth2";
+            AccessToken = "abcd";
+
         
         }
         public IActionResult Index()
@@ -34,8 +35,27 @@ namespace app.Controllers
                 Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
                 }
             Console.WriteLine(">\n");
+            
+            String session_access_token = HttpContext.Session.GetString("access_token") ?? "";
+            String session_api_response_json = HttpContext.Session.GetString("api_response_json") ?? "";
+            
+            if(session_access_token.Length >0 && session_api_response_json.Length>0)
+            {
+                Console.WriteLine("-> resp");
+                return Redirect(Config.BaseUrl + "/home/resp");
+            }
+            else if (session_access_token.Length >0 && session_api_response_json.Length==0)
+            {
+                Console.WriteLine("-> req");
+                return Redirect(Config.BaseUrl + "/home/req");
+            }
+            else 
+            {
+                Console.WriteLine("-> guide");
+                return Redirect(Config.BaseUrl + "/home/guide");
+            }
 
-            return View();
+            // return View();
         }
 
         public IActionResult Privacy()
@@ -47,17 +67,6 @@ namespace app.Controllers
         {   
             HttpContext.Session.SetString("BaseUrl", Config.BaseUrl);
             HttpContext.Session.SetString("HomeController -> Guide", "event!!!!!!");
-            // HttpContext.Session.SetString("accessTokenController", "abcdefg");
-            // oAuthContent.testVal1 = HttpContext.Session.GetString("accessTokenEvent") ?? "event->null";
-            // oAuthContent.testVal2 = HttpContext.Session.GetString("accessTokenController") ?? "event->null";
-            
-            // this.AddAuthButton = "<button href=\"https://www.sageone.com/oauth2/auth/central?filter=apiv3.1&response_type=code&client_id=" + Config.ClientId + "&redirect_uri=https://localhost:5001/auth/callback&scope=full_access&state=1234567\">Authorize API access</button>";
-            // this.Message = "<code>test</code>";
-            
-            // oAuthContent.callbackUrl = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1&response_type=code&client_id=" + Config.ClientId + "&redirect_uri=https://localhost:5001/auth/callback&scope=full_access&state=1234567";
-            // so.authCode = "abc";
-            // Console.WriteLine("cb: " + oAuthContent.callbackUrl);
-            // ViewData["UrlAuthorizeApiAccess"] = UrlAuthorizeApiAccess;
 
             foreach(var k in HttpContext.Session.Keys){
                 Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
