@@ -55,7 +55,7 @@ namespace app
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // identityserver
                 .AddCookie(o => o.LoginPath = new PathString("/login"))
-                .AddOAuth("oauth2", "Sage Accounting", o =>         // http://localhost:5000/login?authscheme=oauth2
+                .AddOAuth("oauth2", "Sage Accounting", o => 
                 {
                     o.ClientId = Config.ClientId;
                     o.ClientSecret = Config.ClientSecret;
@@ -79,25 +79,12 @@ namespace app
                     // o.Scope.Add("email");
 
                     o.Scope.Add("full_access");
-                    o.Events = new OAuthEvents
+                     o.Events = new OAuthEvents
                     {
                         OnRemoteFailure = HandleOnRemoteFailure,
                         OnCreatingTicket = async context =>
                         {
                             // Get the user
-
-                            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint); // Userinformationendpoint
-                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken); // Bearer
-                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
-                            response.EnsureSuccessStatusCode();
-
-                            Console.WriteLine("***" + (string)await response.Content.ReadAsStringAsync());
-
-
-                            JObject jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
-                            context.RunClaimActions(jsonResponse);
 
                             context.HttpContext.Session.SetString("access_token", context.AccessToken);
                             context.HttpContext.Session.SetString("refresh_token", context.RefreshToken);
@@ -109,10 +96,23 @@ namespace app
                             {
                                 Console.WriteLine("*** " + k.ToString() + " -> " + context.HttpContext.Session.GetString(k));
                             }
-                            Console.WriteLine(">\n");
+                            Console.WriteLine(">\n"); 
 
+/*                          var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint); // Userinformationendpoint
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken); // Bearer
+                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+                            response.EnsureSuccessStatusCode();
+
+                            Console.WriteLine("***" + (string)await response.Content.ReadAsStringAsync());
+
+
+                            JObject jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+                            context.RunClaimActions(jsonResponse);
+  */
                         }
-                    };
+                    }; 
                 });
         }
 
@@ -274,7 +274,7 @@ namespace app
                                 return;
                             }
 
-                            // Display user information
+                            /* // Display user information
                             var response = context.Response;
                             response.ContentType = "text/html";
                             await response.WriteAsync("<html><body>");
@@ -305,8 +305,31 @@ namespace app
                                 Console.WriteLine("*** " + k.ToString() + " -> " + response.HttpContext.Session.GetString(k));
                             }
                             Console.WriteLine(">\n");
-
+ */
                         });
+
+            /*app.Map("/make_request", makeRequest =>
+            {
+                makeRequest.Run(async context =>
+                {
+                    var response = context.Response;
+
+
+                            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint); // Userinformationendpoint
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken); // Bearer
+                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+                            response.EnsureSuccessStatusCode();
+
+                            Console.WriteLine("***" + (string)await response.Content.ReadAsStringAsync());
+
+
+                            JObject jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+                            context.RunClaimActions(jsonResponse); 
+                });
+            });
+*/
 
             // Sign-out to remove the user cookie.
             app.Map("/logout", signoutApp =>
@@ -369,7 +392,7 @@ namespace app
         {
             return Task.FromResult<OAuthOptions>(context.RequestServices.GetRequiredService<IOptionsMonitor<OAuthOptions>>().Get(currentAuthType));
         }
-        private async Task PrintRefreshedTokensAsync(HttpResponse response, JObject payload, AuthenticationProperties authProperties)
+/*         private async Task PrintRefreshedTokensAsync(HttpResponse response, JObject payload, AuthenticationProperties authProperties)
         {
             response.ContentType = "text/html";
             await response.WriteAsync("<html><body>");
@@ -386,6 +409,6 @@ namespace app
             await response.WriteAsync("<a href=\"/\">Home</a><br>");
             await response.WriteAsync("<a href=\"/refresh_token\">Refresh Token</a><br>");
             await response.WriteAsync("</body></html>");
-        }
+        } */
     }
 }

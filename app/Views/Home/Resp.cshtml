@@ -54,8 +54,8 @@
             <label class="field__label">Access Token</label>
             <p id="timer" class="field__help">...</p>
             <div class="field__body">
-                <input class="field__input" value="<?php echo $token ?>" required readonly />
-                <a class="button">Refresh Token</a>
+                <input class="field__input" value="@HttpContextAccessor.HttpContext.Session.GetString("access_token")" required readonly />
+                <a class="button" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/refresh_token/">Refresh Token</a>
             </div>
         </div>
 
@@ -106,16 +106,14 @@
                 Returned in <strong><?php echo $response->getDuration(); ?></strong> seconds
             </p>
             <div class="field__body">
-                <input class="field__input" readonly value="<?php echo $response->getStatus(); ?>" />
+                <input class="field__input" readonly value="@HttpContextAccessor.HttpContext.Session.GetString("responseStatusCode")" />
             </div>
         </div>
 
         <div class="field">
             <label class="field__label">Response Body</label>
             <div class="field__body">
-                <textarea class="field__input response__body" readonly><?php
-        echo json_encode($response->getJSON(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-      ?></textarea>
+                <textarea class="field__input response__body" readonly>@HttpContextAccessor.HttpContext.Session.GetString("responseContent")</textarea>
             </div>
         </div>
     </div>
