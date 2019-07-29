@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Encodings.Web;
+using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace app
 {
@@ -196,6 +199,82 @@ namespace app
                     return;
                 });
             });
+
+            app.Map("/query_api", signinApp =>
+               {
+                   signinApp.Run(async context =>
+                   {
+                      String qry_http_verb =  context.Request.Query["http_verb"].ToString() ?? "";
+                      String qry_resource =  context.Request.Query["resource"].ToString() ?? "";
+                      String qry_post_data =  context.Request.Query["post_data"].ToString() ?? "";
+                      
+                      Console.WriteLine(qry_http_verb + " - " + qry_resource + " - " + qry_post_data);
+
+                    using (HttpClient client = new HttpClient())
+                        {
+                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            
+                             HttpRequestMessage request;
+
+                              switch (qry_http_verb)
+                              {
+                                  case "get":
+                                      request = new HttpRequestMessage(HttpMethod.Get, Config.ApiBaseEndpoint + qry_resource);
+                                      break;
+                                  case "post":
+                                      request = new HttpRequestMessage(HttpMethod.Post, Config.ApiBaseEndpoint + qry_resource);
+                                      break;
+                                  case "put":
+                                      request = new HttpRequestMessage(HttpMethod.Put, Config.ApiBaseEndpoint + qry_resource);
+                                      break;
+                                  case "delete":
+                                      request = new HttpRequestMessage(HttpMethod.Delete, Config.ApiBaseEndpoint + qry_resource);
+                                      break;
+                                  default:
+                                      request = new HttpRequestMessage(HttpMethod.Get, Config.ApiBaseEndpoint + qry_resource);
+                                      break;
+                              }
+
+                            // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.Session.GetString("access_token") ?? ""); // Bearer
+                            // request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                            if (qry_http_verb.Equals("post") && !qry_post_data.Equals(""))
+                            {
+                                Console.WriteLine("Post und body");
+                                request.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(qry_post_data));
+                            }
+
+                            Task<HttpResponseMessage> responseMsgAsync = client.SendAsync(request);
+                            Task.WaitAll(responseMsgAsync);
+
+                            HttpResponseMessage response = responseMsgAsync.Result;
+
+                            //{
+                                using (HttpContent content = response.Content)
+                                {
+                                    string result = await content.ReadAsStringAsync();
+
+                                    context.Response.HttpContext.Session.SetString("responseStatusCode", response.StatusCode.ToString());
+
+                                    if (result != null &&
+                                        result.Length >= 50)
+                                    {
+                                      dynamic parsedJson = JsonConvert.DeserializeObject(result.ToString());
+                                      String responseContentPretty =  JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+                                      context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
+
+                                    }
+                                }
+                            //}
+                        }
+
+                      context.Response.Redirect(Config.BaseUrl + "/");
+
+                      return;
+                   });
+
+               });
 
             app.Run(async context =>
                         {

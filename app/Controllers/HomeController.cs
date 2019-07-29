@@ -16,7 +16,7 @@ namespace app.Controllers
 {
     public class HomeController : Controller
     {
-        public SageOAuthModel oAuthContent { get; set; }
+        ContentModel model = new ContentModel();
 
         public string UrlAuthorizeApiAccess { get; set; }
 
@@ -80,11 +80,17 @@ namespace app.Controllers
                 Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
             }
             Console.WriteLine(">\n");
-            return Redirect(Config.BaseUrl + "/home/resp");
+            // return Redirect(Config.BaseUrl + "/home/resp");
+            //return View(model);
+            return RedirectToAction("Index");
+
         }
         public IActionResult Index()
         {
-            Console.WriteLine("<HomeController -> Index\n");
+
+            model.partialAccessTokenAvailable = "1";
+            model.partialResposeIsAvailable = "1";
+            /* Console.WriteLine("<HomeController -> Index\n");
             HttpContext.Session.SetString("HomeController -> Index", "John");
             foreach (var k in HttpContext.Session.Keys)
             {
@@ -109,9 +115,9 @@ namespace app.Controllers
             {
                 Console.WriteLine("redirect -> guide");
                 return Redirect(Config.BaseUrl + "/home/guide");
-            }
+            } */
 
-            // return View();
+            return View(model);
         }
 
         public IActionResult Privacy()

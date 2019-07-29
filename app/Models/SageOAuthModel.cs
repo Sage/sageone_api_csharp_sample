@@ -20,9 +20,8 @@ namespace app.Models
         public string refreshToken { get; set; }
         public string authState { get; set; }
 
-        public string testVal1 { get; set; }
-
-        public string testVal2 { get; set; }
+        public int partialAccessTokenAvailable { get; set; }
+        public int partialResposeIsAvailable { get; set; }
 
     }
 }

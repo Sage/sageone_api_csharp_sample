@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
+@model app.Models.ContentModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Guide";
@@ -47,5 +48,5 @@
     </ol>
 </div>
 
-<div class="main"><div class="request is-centered"><a class="button is-centered" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login">Authorize API access</a></div></div>
+<div class="main">
 
