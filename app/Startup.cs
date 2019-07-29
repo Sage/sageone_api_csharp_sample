@@ -236,9 +236,6 @@ namespace app
                                       break;
                               }
 
-                            // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.Session.GetString("access_token") ?? ""); // Bearer
-                            // request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
                             if (qry_http_verb.Equals("post") && !qry_post_data.Equals(""))
                             {
                                 Console.WriteLine("Post und body");

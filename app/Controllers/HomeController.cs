@@ -93,46 +93,26 @@ namespace app.Controllers
             // default values
             var sessionName = new Byte[20];
             if (!HttpContext.Session.TryGetValue("reqEndpoint",out sessionName))
-            {
-                Console.WriteLine("Endpoint NA");
                 HttpContext.Session.SetString("reqEndpoint", "user");
-            }
-            else
-            {
-                Console.WriteLine("Endpoint filled");
-            }
-              
-              
 
 
-            model.partialAccessTokenAvailable = "1";
-            model.partialResposeIsAvailable = "1";
-            /* Console.WriteLine("<HomeController -> Index\n");
-            HttpContext.Session.SetString("HomeController -> Index", "John");
-            foreach (var k in HttpContext.Session.Keys)
+            if (!HttpContext.Session.TryGetValue("access_token",out sessionName))
             {
-                Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
+              // access_token field is empty
+              model.partialAccessTokenAvailable = "0";
+              model.partialResposeIsAvailable = "0";
             }
-            Console.WriteLine(">\n");
-
-            String session_access_token = HttpContext.Session.GetString("access_token") ?? "";
-            String session_api_response_json = HttpContext.Session.GetString("api_response_json") ?? "";
-
-            if (session_access_token.Length > 0 && session_api_response_json.Length > 0)
+            else if (HttpContext.Session.TryGetValue("access_token",out sessionName) && !HttpContext.Session.TryGetValue("responseContent",out sessionName)) 
             {
-                Console.WriteLine("redirect -> resp");
-                return Redirect(Config.BaseUrl + "/home/resp");
+              // access_token filled and responseContent is empty
+              model.partialAccessTokenAvailable = "1";
+              model.partialResposeIsAvailable = "0";
             }
-            else if (session_access_token.Length > 0 && session_api_response_json.Length == 0)
+            else 
             {
-                Console.WriteLine("redirect -> req");
-                return Redirect(Config.BaseUrl + "/home/req");
+              model.partialAccessTokenAvailable = "1";
+              model.partialResposeIsAvailable = "1";
             }
-            else
-            {
-                Console.WriteLine("redirect -> guide");
-                return Redirect(Config.BaseUrl + "/home/guide");
-            } */
 
             return View(model);
         }
