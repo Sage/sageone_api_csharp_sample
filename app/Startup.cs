@@ -185,7 +185,7 @@ namespace app
             response.HttpContext.Session.SetString("expires_at", await context.GetTokenAsync("expires_at"));
 
 
-            context.Response.Redirect(Config.BaseUrl + "/");
+            context.Response.Redirect("/");
 
             return;
           });
@@ -255,7 +255,7 @@ namespace app
                  }
                }
 
-               context.Response.Redirect(Config.BaseUrl + "/");
+               context.Response.Redirect("/");
 
                return;
              });

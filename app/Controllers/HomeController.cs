@@ -22,6 +22,9 @@ namespace app.Controllers
         public IActionResult Index()
         {
 
+            HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
+
+
             // default values
             var sessionName = new Byte[20];
             if (!HttpContext.Session.TryGetValue("reqEndpoint",out sessionName))
@@ -56,9 +59,6 @@ namespace app.Controllers
 
         public IActionResult Guide()
         {
-            HttpContext.Session.SetString("BaseUrl", Config.BaseUrl);
-            HttpContext.Session.SetString("HomeController -> Guide", "event!!!!!!");
-
             foreach (var k in HttpContext.Session.Keys)
             {
                 Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
