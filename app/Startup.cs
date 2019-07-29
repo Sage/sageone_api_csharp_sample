@@ -207,7 +207,7 @@ namespace app
                       String qry_http_verb =  context.Request.Query["http_verb"].ToString() ?? "";
                       String qry_resource =  context.Request.Query["resource"].ToString() ?? "";
                       String qry_post_data =  context.Request.Query["post_data"].ToString() ?? "";
-                      
+                    
                       Console.WriteLine(qry_http_verb + " - " + qry_resource + " - " + qry_post_data);
 
                     using (HttpClient client = new HttpClient())
@@ -249,13 +249,13 @@ namespace app
                             Task.WaitAll(responseMsgAsync);
 
                             HttpResponseMessage response = responseMsgAsync.Result;
-
                             //{
                                 using (HttpContent content = response.Content)
                                 {
                                     string result = await content.ReadAsStringAsync();
 
                                     context.Response.HttpContext.Session.SetString("responseStatusCode", response.StatusCode.ToString());
+                                    context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
 
                                     if (result != null &&
                                         result.Length >= 50)

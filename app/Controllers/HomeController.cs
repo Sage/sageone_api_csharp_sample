@@ -28,9 +28,11 @@ namespace app.Controllers
             // SageOAuthModel oAuthContent = new SageOAuthModel();
             // oAuthContent.callbackUrl = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1&response_type=code&client_id=" + Config.ClientId + "&redirect_uri=https://localhost:5001/auth/callback&scope=full_access&state=1234567";
             UrlAuthorizeApiAccess = Config.BaseUrl + "/login";
+            //HttpContext.Session.SetString("reqEndpoint", "user");
+
         }
 
-        [HttpGet]
+        /* [HttpGet]
         public IActionResult ApiRequest(String http_verb, String resource)
         {
 
@@ -84,9 +86,24 @@ namespace app.Controllers
             //return View(model);
             return RedirectToAction("Index");
 
-        }
+        } */
         public IActionResult Index()
         {
+
+            // default values
+            var sessionName = new Byte[20];
+            if (!HttpContext.Session.TryGetValue("reqEndpoint",out sessionName))
+            {
+                Console.WriteLine("Endpoint NA");
+                HttpContext.Session.SetString("reqEndpoint", "user");
+            }
+            else
+            {
+                Console.WriteLine("Endpoint filled");
+            }
+              
+              
+
 
             model.partialAccessTokenAvailable = "1";
             model.partialResposeIsAvailable = "1";

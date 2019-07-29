@@ -68,7 +68,7 @@
       https://api.accounting.sage.com/v3.1/<strong>&lt;Resource&gt;</strong>
     </p>
     <div class="field__body">
-      <input class="field__input" list="resources" value="contacts" id="resource" name="resource" required/>
+      <input class="field__input" list="resources" value="@HttpContextAccessor.HttpContext.Session.GetString("reqEndpoint")" id="resource" name="resource" required/>
       <datalist id="resources">
         <option>contacts</option>
         <option>oranges</option>
