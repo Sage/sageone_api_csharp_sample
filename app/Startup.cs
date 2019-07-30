@@ -92,6 +92,7 @@ namespace app
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -277,7 +278,7 @@ namespace app
          });
 
       app.Run(async context =>
-                  {
+                  { Console.WriteLine("app.run (no Endpoint)");
                     tokenfileRead(context);
 
                     // Setting DefaultAuthenticateScheme causes User to be set
@@ -385,17 +386,17 @@ namespace app
         using (JsonTextReader reader = new JsonTextReader(file))
         {
           JObject jsonObj = (JObject)JToken.ReadFrom(reader);
-          context.Request.HttpContext.Session.SetString("access_token", (string)jsonObj["data"]["access_token"]);
-          contentFromFile.Add("access_token", (string)jsonObj["data"]["access_token"]);
+          context.Request.HttpContext.Session.SetString("access_token", (string)jsonObj["access_token"]);
+          contentFromFile.Add("access_token", (string)jsonObj["access_token"]);
 
-          context.Request.HttpContext.Session.SetString("expires_at", (string)jsonObj["data"]["expires_at"]);
-          contentFromFile.Add("expires_at", (string)jsonObj["data"]["expires_at"]);
+          context.Request.HttpContext.Session.SetString("expires_at", (string)jsonObj["expires_at"]);
+          contentFromFile.Add("expires_at", (string)jsonObj["expires_at"]);
 
-          context.Request.HttpContext.Session.SetString("refresh_token", (string)jsonObj["data"]["refresh_token"]);
-          contentFromFile.Add("refresh_token", (string)jsonObj["data"]["refresh_token"]);
+          context.Request.HttpContext.Session.SetString("refresh_token", (string)jsonObj["refresh_token"]);
+          contentFromFile.Add("refresh_token", (string)jsonObj["refresh_token"]);
 
-          context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["data"]["refresh_token_expires_at"]);
-          contentFromFile.Add("refresh_token_expires_at", (string)jsonObj["data"]["refresh_token_expires_at"]);
+          context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["refresh_token_expires_at"]);
+          contentFromFile.Add("refresh_token_expires_at", (string)jsonObj["refresh_token_expires_at"]);
 
         }
 
