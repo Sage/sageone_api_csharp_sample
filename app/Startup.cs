@@ -82,10 +82,7 @@ namespace app
               OnRemoteFailure = HandleOnRemoteFailure,
               OnCreatingTicket = async context =>
                     {
-                      context.HttpContext.Session.SetString("access_token", context.AccessToken);
-                      context.HttpContext.Session.SetString("refresh_token", context.RefreshToken);
-                      context.HttpContext.Session.SetString("token_type", context.TokenType);
-                      context.HttpContext.Session.SetString("expires_at", context.ExpiresIn.ToString());
+                      tokenfileWrite(context.AccessToken, context.ExpiresIn.ToString(), context.RefreshToken, context.ExpiresIn.ToString(), context.HttpContext);
                     }
             };
           });
@@ -196,11 +193,11 @@ namespace app
                 }
                 await context.SignInAsync(user, authProperties);
 
-                response.HttpContext.Session.SetString("access_token", await context.GetTokenAsync("access_token"));
-                response.HttpContext.Session.SetString("refresh_token", await context.GetTokenAsync("refresh_token"));
-                response.HttpContext.Session.SetString("token_type", await context.GetTokenAsync("token_type"));
-                response.HttpContext.Session.SetString("expires_at", await context.GetTokenAsync("expires_at"));
-
+                tokenfileWrite( await context.GetTokenAsync("access_token"), 
+                                await context.GetTokenAsync("expires_at"), 
+                                await context.GetTokenAsync("refresh_token"), 
+                                await context.GetTokenAsync("expires_at"),
+                                context);
 
                 context.Response.Redirect("/");
 
@@ -281,6 +278,8 @@ namespace app
 
       app.Run(async context =>
                   {
+                    tokenfileRead(context);
+
                     // Setting DefaultAuthenticateScheme causes User to be set
                     var user = context.User;
 
@@ -353,6 +352,58 @@ namespace app
     private Task<OAuthOptions> GetOAuthOptionsAsync(HttpContext context, string currentAuthType)
     {
       return Task.FromResult<OAuthOptions>(context.RequestServices.GetRequiredService<IOptionsMonitor<OAuthOptions>>().Get(currentAuthType));
+    }
+
+    public static void tokenfileWrite(string access_token, string expires_at, string refresh_token, string refresh_token_expires_at, HttpContext context)
+    {
+      Console.WriteLine("-> tokenfileWrite -> " + Path.Combine(Directory.GetCurrentDirectory(), "access_token.json"));
+
+      JObject newContent = new JObject(
+        new JProperty("access_token", access_token),
+        new JProperty("expires_at", expires_at),
+        new JProperty("refresh_token", refresh_token),
+        new JProperty("refresh_token_expires_at", refresh_token_expires_at)
+        );
+
+      File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json"), newContent.ToString());
+
+      context.Request.HttpContext.Session.SetString("access_token", access_token);
+      context.Request.HttpContext.Session.SetString("expires_at", expires_at);
+      context.Request.HttpContext.Session.SetString("refresh_token", refresh_token);
+      context.Request.HttpContext.Session.SetString("refresh_token_expires_at", refresh_token_expires_at);
+    }
+
+    public static Dictionary<string, string> tokenfileRead(HttpContext context)
+    {
+      Dictionary<string, string> contentFromFile = new Dictionary<string, string>();
+
+      if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
+      { 
+        Console.WriteLine("-> tokenfileRead -> file exists");
+
+        using (StreamReader file = File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
+        using (JsonTextReader reader = new JsonTextReader(file))
+        {
+          JObject jsonObj = (JObject)JToken.ReadFrom(reader);
+          context.Request.HttpContext.Session.SetString("access_token", (string)jsonObj["data"]["access_token"]);
+          contentFromFile.Add("access_token", (string)jsonObj["data"]["access_token"]);
+
+          context.Request.HttpContext.Session.SetString("expires_at", (string)jsonObj["data"]["expires_at"]);
+          contentFromFile.Add("expires_at", (string)jsonObj["data"]["expires_at"]);
+
+          context.Request.HttpContext.Session.SetString("refresh_token", (string)jsonObj["data"]["refresh_token"]);
+          contentFromFile.Add("refresh_token", (string)jsonObj["data"]["refresh_token"]);
+
+          context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["data"]["refresh_token_expires_at"]);
+          contentFromFile.Add("refresh_token_expires_at", (string)jsonObj["data"]["refresh_token_expires_at"]);
+
+        }
+
+      }
+      else {
+        Console.WriteLine("-> tokenfileRead -> does not exists");
+      }
+      return contentFromFile;
     }
   }
 }

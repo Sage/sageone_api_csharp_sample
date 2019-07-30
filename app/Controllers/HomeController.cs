@@ -20,10 +20,9 @@ namespace app.Controllers
 
 
         public IActionResult Index()
-        {
+        {   Console.WriteLine("IActionResult Index");
 
             HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
-
 
             // default values
             var sessionName = new Byte[20];
@@ -52,13 +51,10 @@ namespace app.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Guide()
         {
+            Console.WriteLine("IActionResult Guide");
+
             foreach (var k in HttpContext.Session.Keys)
             {
                 Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
@@ -70,12 +66,13 @@ namespace app.Controllers
 
         public IActionResult Req()
         {
-
+            Console.WriteLine("IActionResult Req");
             return View();
         }
 
         public IActionResult Resp()
         {
+            Console.WriteLine("IActionResult Resp");
             return View();
         }
 
