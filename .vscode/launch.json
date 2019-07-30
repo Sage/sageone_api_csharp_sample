@@ -27,7 +27,7 @@
             "WARNING16": "button at the bottom of this file.",
             "WARNING17": "*********************************************************************************",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/app/bin/Debug/netcoreapp2.1/app.dll",
+            "program": "${workspaceFolder}/app/bin/Debug/netcoreapp2.2/app.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

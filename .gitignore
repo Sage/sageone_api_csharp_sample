@@ -16,7 +16,7 @@
 # End of https://www.gitignore.io/api/dotnetcore
 
 # exclude the used client config file
-*/Config.cs
+*/client_application.json
 
 # exclude visual studio settings folder
 .vs
