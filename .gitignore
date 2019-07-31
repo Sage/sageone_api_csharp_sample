@@ -9,6 +9,10 @@
 /app/obj/
 /app/out/
 
+# exclude the used client config file
+/app/client_application.json
+/app/access_token.json
+
 # Common node modules locations
 /node_modules
 /wwwroot/node_modules
@@ -16,8 +20,7 @@
 
 # End of https://www.gitignore.io/api/dotnetcore
 
-# exclude the used client config file
-*/client_application.json
+
 
 # exclude visual studio settings folder
 .vs
