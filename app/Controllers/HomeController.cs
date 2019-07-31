@@ -28,6 +28,16 @@ namespace app.Controllers
 
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
 
+
+      if (this.configFileExist())
+      {
+        model.clientApplicationConfigNotFound = "0";
+      }
+      else 
+      {
+        model.clientApplicationConfigNotFound = "1";
+      }
+      
       // default values
       var sessionName = new Byte[20];
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out sessionName))
@@ -107,6 +117,14 @@ namespace app.Controllers
       {
         Console.WriteLine("-> tokenfileRead (controller) -> does not exists");
       }
+    }
+    public bool configFileExist() {
+      if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
+      {
+        return true;
+      }
+
+      return false;
     }
   }
 }

@@ -14,9 +14,8 @@ namespace app.Models
         public string respStatusCode { get; set; }
         public string respBody { get; set; }
 
-        public string partialAccessTokenAvailable {get; set;}
-        
+        public string partialAccessTokenAvailable {get; set;}       
         public string partialResposeIsAvailable {get; set;}
-
+        public string clientApplicationConfigNotFound {get; set;}
     }
 }
