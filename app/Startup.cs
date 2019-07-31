@@ -54,11 +54,13 @@ namespace app
 
       services.AddSession(options =>
       {
-        options.Cookie.HttpOnly = false;
+        options.Cookie.HttpOnly = true;
+        // Make the session cookie essential
+        options.Cookie.IsEssential = true;
 
         options.IdleTimeout = TimeSpan.FromMinutes(15);
-        //options.Cookie.SameSite = SameSiteMode.Strict;
-        //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
       });
 
       services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -73,7 +75,6 @@ namespace app
             o.CallbackPath = new PathString("/auth/callback");
             o.AuthorizationEndpoint = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
             o.TokenEndpoint = "https://oauth.accounting.sage.com/token";
-            o.UserInformationEndpoint = "https://api.accounting.sage.com/v3.1";
             o.SaveTokens = true;
 
             o.Scope.Add("full_access");
@@ -86,7 +87,6 @@ namespace app
                     }
             };
           });
-
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -194,9 +194,9 @@ namespace app
                 }
                 await context.SignInAsync(user, authProperties);
 
-                tokenfileWrite( await context.GetTokenAsync("access_token"), 
-                                await context.GetTokenAsync("expires_at"), 
-                                await context.GetTokenAsync("refresh_token"), 
+                tokenfileWrite(await context.GetTokenAsync("access_token"),
+                                await context.GetTokenAsync("expires_at"),
+                                await context.GetTokenAsync("refresh_token"),
                                 await context.GetTokenAsync("expires_at"),
                                 context);
 
@@ -213,8 +213,6 @@ namespace app
                    String qry_http_verb = context.Request.Query["http_verb"].ToString() ?? "";
                    String qry_resource = context.Request.Query["resource"].ToString() ?? "";
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
-
-                   Console.WriteLine(qry_http_verb + " - " + qry_resource + " - " + qry_post_data);
 
                    using (HttpClient client = new HttpClient())
                    {
@@ -244,7 +242,6 @@ namespace app
 
                      if (qry_http_verb.Equals("post") && !qry_post_data.Equals(""))
                      {
-                       Console.WriteLine("Post und body");
                        request.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(qry_post_data));
                      }
 
@@ -278,7 +275,7 @@ namespace app
          });
 
       app.Run(async context =>
-                  { Console.WriteLine("app.run (no Endpoint)");
+                  {
                     tokenfileRead(context);
 
                     // Setting DefaultAuthenticateScheme causes User to be set
@@ -357,8 +354,6 @@ namespace app
 
     public static void tokenfileWrite(string access_token, string expires_at, string refresh_token, string refresh_token_expires_at, HttpContext context)
     {
-      Console.WriteLine("-> tokenfileWrite -> " + Path.Combine(Directory.GetCurrentDirectory(), "access_token.json"));
-
       JObject newContent = new JObject(
         new JProperty("access_token", access_token),
         new JProperty("expires_at", expires_at),
@@ -379,9 +374,7 @@ namespace app
       Dictionary<string, string> contentFromFile = new Dictionary<string, string>();
 
       if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
-      { 
-        Console.WriteLine("-> tokenfileRead -> file exists");
-
+      {
         using (StreamReader file = File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
         using (JsonTextReader reader = new JsonTextReader(file))
         {
@@ -400,9 +393,6 @@ namespace app
 
         }
 
-      }
-      else {
-        Console.WriteLine("-> tokenfileRead -> does not exists");
       }
       return contentFromFile;
     }

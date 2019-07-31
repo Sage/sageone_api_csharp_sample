@@ -22,8 +22,6 @@ namespace app.Controllers
 
     public IActionResult Index()
     {
-      Console.WriteLine("IActionResult Index");
-
       this.tokenfileRead(HttpContext);
 
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
@@ -33,11 +31,11 @@ namespace app.Controllers
       {
         model.clientApplicationConfigNotFound = "0";
       }
-      else 
+      else
       {
         model.clientApplicationConfigNotFound = "1";
       }
-      
+
       // default values
       var sessionName = new Byte[20];
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out sessionName))
@@ -67,33 +65,22 @@ namespace app.Controllers
 
     public IActionResult Guide()
     {
-      Console.WriteLine("IActionResult Guide");
-
-      foreach (var k in HttpContext.Session.Keys)
-      {
-        Console.WriteLine("*** " + k.ToString() + " -> " + HttpContext.Session.GetString(k));
-      }
-      Console.WriteLine(">\n");
-
       return View();
     }
 
     public IActionResult Req()
     {
-      Console.WriteLine("IActionResult Req");
       return View();
     }
 
     public IActionResult Resp()
     {
-      Console.WriteLine("IActionResult Resp");
       return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-      // return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
       return View();
     }
 
@@ -101,8 +88,6 @@ namespace app.Controllers
     {
       if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
       {
-        Console.WriteLine("-> tokenfileRead (controller) -> file exists");
-
         using (StreamReader file = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
         using (JsonTextReader reader = new JsonTextReader(file))
         {
@@ -113,12 +98,9 @@ namespace app.Controllers
           context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["refresh_token_expires_at"]);
         }
       }
-      else
-      {
-        Console.WriteLine("-> tokenfileRead (controller) -> does not exists");
-      }
     }
-    public bool configFileExist() {
+    public bool configFileExist()
+    {
       if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
       {
         return true;
