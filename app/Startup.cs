@@ -54,13 +54,13 @@ namespace app
 
       services.AddSession(options =>
       {
-        options.Cookie.HttpOnly = true;
+        options.Cookie.HttpOnly = false;
         // Make the session cookie essential
         options.Cookie.IsEssential = true;
 
-        options.IdleTimeout = TimeSpan.FromMinutes(15);
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.IdleTimeout = TimeSpan.FromHours(1);
+        // options.Cookie.SameSite = SameSiteMode.Strict;
+        // options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
       });
 
       services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -210,10 +210,12 @@ namespace app
          {
            signinApp.Run(async context =>
                  {
+                   Console.WriteLine("/query_api");
                    String qry_http_verb = context.Request.Query["http_verb"].ToString() ?? "";
                    String qry_resource = context.Request.Query["resource"].ToString() ?? "";
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
 
+                   
                    using (HttpClient client = new HttpClient())
                    {
                      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
@@ -262,7 +264,7 @@ namespace app
                          dynamic parsedJson = JsonConvert.DeserializeObject(result.ToString());
                          String responseContentPretty = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
                          context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
-
+                         Console.WriteLine("responseContent" + responseContentPretty);
                        }
                      }
                    }
@@ -274,8 +276,9 @@ namespace app
 
          });
 
-      app.Run(async context =>
+       app.Run(async context =>
                   {
+                    Console.WriteLine("index app.run");
                     tokenfileRead(context);
 
                     // Setting DefaultAuthenticateScheme causes User to be set
@@ -291,7 +294,7 @@ namespace app
                       return;
                     }
 
-                  });
+                  }); 
 
 
       // Sign-out to remove the user cookie.

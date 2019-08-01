@@ -21,7 +21,9 @@ namespace app.Controllers
 
 
     public IActionResult Index()
+  
     {
+      Console.WriteLine("index controller");
       this.tokenfileRead(HttpContext);
 
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
@@ -61,7 +63,7 @@ namespace app.Controllers
       }
 
       return View(model);
-    }
+    } 
 
     public IActionResult Guide()
     {
