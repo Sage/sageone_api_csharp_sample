@@ -39,18 +39,18 @@ namespace app.Controllers
       }
 
       // default values
-      var sessionName = new Byte[20];
-      if (!HttpContext.Session.TryGetValue("reqEndpoint", out sessionName))
+      var readValue = new Byte[1024];
+      if (!HttpContext.Session.TryGetValue("reqEndpoint", out readValue))
         HttpContext.Session.SetString("reqEndpoint", "user");
 
 
-      if (!HttpContext.Session.TryGetValue("access_token", out sessionName))
+      if (!HttpContext.Session.TryGetValue("access_token", out readValue))
       {
         // access_token field is empty
         model.partialAccessTokenAvailable = "0";
         model.partialResposeIsAvailable = "0";
       }
-      else if (HttpContext.Session.TryGetValue("access_token", out sessionName) && !HttpContext.Session.TryGetValue("responseContent", out sessionName))
+      else if (HttpContext.Session.TryGetValue("access_token", out readValue) && !HttpContext.Session.TryGetValue("responseContent", out readValue))
       {
         // access_token filled and responseContent is empty
         model.partialAccessTokenAvailable = "1";

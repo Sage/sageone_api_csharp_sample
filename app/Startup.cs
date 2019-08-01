@@ -55,18 +55,14 @@ namespace app
       services.AddSession(options =>
       {
         options.Cookie.HttpOnly = false;
-        // Make the session cookie essential
         options.Cookie.IsEssential = true;
-
         options.IdleTimeout = TimeSpan.FromHours(1);
-        // options.Cookie.SameSite = SameSiteMode.Strict;
-        // options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
       });
 
       services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // identityserver
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
           .AddCookie(o => o.LoginPath = new PathString("/login"))
           .AddOAuth("oauth2", "Sage Accounting", o =>
           {
@@ -100,16 +96,12 @@ namespace app
       else
       {
         app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
 
-      // app.UseHttpsRedirection();
       app.UseStaticFiles();
       app.UseSession();
-
       app.UseCookiePolicy();
-
       app.UseAuthentication();
       app.UseMvc(routes =>
       {
@@ -210,11 +202,11 @@ namespace app
          {
            signinApp.Run(async context =>
                  {
-                   Console.WriteLine("/query_api");
                    String qry_http_verb = context.Request.Query["http_verb"].ToString() ?? "";
                    String qry_resource = context.Request.Query["resource"].ToString() ?? "";
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
 
+                   Console.WriteLine("/query_api -> " + qry_http_verb +" -> "+ qry_resource +" -> "+ qry_post_data);
                    
                    using (HttpClient client = new HttpClient())
                    {
@@ -242,6 +234,7 @@ namespace app
                          break;
                      }
 
+                     // if post is selected and Request Body is not empty, set content 
                      if (qry_http_verb.Equals("post") && !qry_post_data.Equals(""))
                      {
                        request.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(qry_post_data));
@@ -261,6 +254,7 @@ namespace app
                        if (result != null &&
                                  result.Length >= 50)
                        {
+                         // prettify json
                          dynamic parsedJson = JsonConvert.DeserializeObject(result.ToString());
                          String responseContentPretty = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
                          context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
@@ -278,7 +272,6 @@ namespace app
 
        app.Run(async context =>
                   {
-                    Console.WriteLine("index app.run");
                     tokenfileRead(context);
 
                     // Setting DefaultAuthenticateScheme causes User to be set
@@ -327,6 +320,7 @@ namespace app
       });
     }
 
+    // helper
     private async Task HandleOnRemoteFailure(RemoteFailureContext context)
     {
       context.Response.StatusCode = 500;

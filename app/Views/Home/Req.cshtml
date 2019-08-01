@@ -25,7 +25,7 @@
       var input = timer.closest('.field').querySelector('.field__input');
       var refresh = timer.closest('.field').querySelector('.button');
       var expires = new Date();
-          expires.setSeconds(expires.getSeconds() + <?php echo $expiresIn ?>);
+          expires.setSeconds(expires.getSeconds() + 300);
 
       function updateSeconds() {
         var now = Date.now();
