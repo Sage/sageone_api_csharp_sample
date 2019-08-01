@@ -24,22 +24,24 @@ namespace app.Controllers
   
     {
       Console.WriteLine("index controller");
+
+      // if access_token.json exists load it and set view settings
       this.tokenfileRead(HttpContext);
 
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
-
 
       if (this.configFileExist())
       {
         model.clientApplicationConfigNotFound = "0";
       }
       else
-      {
+      { 
+        // show warning on Req.cshtml
         model.clientApplicationConfigNotFound = "1";
       }
 
-      // default values
-      var readValue = new Byte[1024];
+
+      var readValue = new Byte[1024];   
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out readValue))
         HttpContext.Session.SetString("reqEndpoint", "user");
 
@@ -82,8 +84,8 @@ namespace app.Controllers
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
-    {
-      return View();
+    { Console.WriteLine("Error!!!!!");
+      return View(model);
     }
 
     public void tokenfileRead(HttpContext context)

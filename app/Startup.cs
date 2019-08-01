@@ -77,9 +77,10 @@ namespace app
             o.Events = new OAuthEvents
             {
               OnRemoteFailure = HandleOnRemoteFailure,
-              OnCreatingTicket = async context =>
+              OnCreatingTicket = async context => //async
                     {
                       tokenfileWrite(context.AccessToken, context.ExpiresIn.ToString(), context.RefreshToken, context.ExpiresIn.ToString(), context.HttpContext);
+                      return; 
                     }
             };
           });
@@ -206,8 +207,8 @@ namespace app
                    String qry_resource = context.Request.Query["resource"].ToString() ?? "";
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
 
-                   Console.WriteLine("/query_api -> " + qry_http_verb +" -> "+ qry_resource +" -> "+ qry_post_data);
-                   
+                   Console.WriteLine("/query_api -> " + qry_http_verb + " -> " + qry_resource + " -> " + qry_post_data);
+
                    using (HttpClient client = new HttpClient())
                    {
                      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
@@ -270,24 +271,24 @@ namespace app
 
          });
 
-       app.Run(async context =>
-                  {
-                    tokenfileRead(context);
+      app.Run(async context =>
+                 {
+                   tokenfileRead(context);
 
                     // Setting DefaultAuthenticateScheme causes User to be set
                     var user = context.User;
 
                     // Deny anonymous request beyond this point.
                     if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
-                    {
+                   {
                       // This is what [Authorize] calls
                       // The cookie middleware will handle this and redirect to /login
                       await context.ChallengeAsync();
 
-                      return;
-                    }
+                     return;
+                   }
 
-                  }); 
+                 });
 
 
       // Sign-out to remove the user cookie.
@@ -349,8 +350,9 @@ namespace app
       return Task.FromResult<OAuthOptions>(context.RequestServices.GetRequiredService<IOptionsMonitor<OAuthOptions>>().Get(currentAuthType));
     }
 
-    public static void tokenfileWrite(string access_token, string expires_at, string refresh_token, string refresh_token_expires_at, HttpContext context)
+    public string tokenfileWrite(string access_token, string expires_at, string refresh_token, string refresh_token_expires_at, HttpContext context)
     {
+      Console.WriteLine("refresh expires: " + refresh_token_expires_at);
       JObject newContent = new JObject(
         new JProperty("access_token", access_token),
         new JProperty("expires_at", expires_at),
@@ -364,6 +366,8 @@ namespace app
       context.Request.HttpContext.Session.SetString("expires_at", expires_at);
       context.Request.HttpContext.Session.SetString("refresh_token", refresh_token);
       context.Request.HttpContext.Session.SetString("refresh_token_expires_at", refresh_token_expires_at);
+
+      return "0";
     }
 
     public static Dictionary<string, string> tokenfileRead(HttpContext context)
