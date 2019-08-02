@@ -172,7 +172,6 @@ namespace app
 
                 Console.WriteLine("json: " + payload.ToString());
 
-
                 Console.WriteLine("");
                 // Persist the new acess token
                 authProperties.UpdateTokenValue("access_token", (string)payload["access_token"]);
@@ -210,7 +209,9 @@ namespace app
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
 
                    Console.WriteLine("/query_api -> " + qry_http_verb + " -> " + qry_resource + " -> " + qry_post_data);
-
+                   
+                   System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
+                   timer.Start();
                    
                    using (HttpClient client = new HttpClient())
                    {
@@ -255,6 +256,7 @@ namespace app
                        context.Response.HttpContext.Session.SetString("responseStatusCode", (int) response.StatusCode + " - " + response.StatusCode.ToString());
                        context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
 
+                      timer.Stop();
                        if (result != null &&
                                  result.Length >= 50)
                        {
@@ -262,7 +264,7 @@ namespace app
                          dynamic parsedJson = JsonConvert.DeserializeObject(result.ToString());
                          String responseContentPretty = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
                          context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
-                         Console.WriteLine("responseContent" + responseContentPretty);
+                         context.Response.HttpContext.Session.SetString("responseTimespan", timer.Elapsed.Seconds + "." + timer.Elapsed.Milliseconds);
                        }
                      }
                    }
