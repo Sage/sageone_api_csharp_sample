@@ -51,7 +51,6 @@ namespace app
       }
 
       services.AddDistributedMemoryCache();
-
       services.AddSession(options =>
       {
         options.Cookie.HttpOnly = false;
@@ -99,7 +98,6 @@ namespace app
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
       }
-
       app.UseStaticFiles();
       app.UseSession();
       app.UseCookiePolicy();
@@ -117,6 +115,7 @@ namespace app
            signinApp.Run(async context =>
                  {
                    await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
+                   
                    return;
                  });
 
@@ -140,7 +139,6 @@ namespace app
                   // This is what [Authorize] calls
                   // The cookie middleware will handle this and redirect to /login
                   await context.ChallengeAsync();
-
                   return;
                 }
 
@@ -172,6 +170,10 @@ namespace app
 
                 JObject payload = JObject.Parse((string)await refreshResponse.Content.ReadAsStringAsync());
 
+                Console.WriteLine("json: " + payload.ToString());
+
+
+                Console.WriteLine("");
                 // Persist the new acess token
                 authProperties.UpdateTokenValue("access_token", (string)payload["access_token"]);
                 refreshToken = (string)payload["refresh_token"];
@@ -209,6 +211,7 @@ namespace app
 
                    Console.WriteLine("/query_api -> " + qry_http_verb + " -> " + qry_resource + " -> " + qry_post_data);
 
+                   
                    using (HttpClient client = new HttpClient())
                    {
                      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
@@ -235,8 +238,8 @@ namespace app
                          break;
                      }
 
-                     // if post is selected and Request Body is not empty, set content 
-                     if (qry_http_verb.Equals("post") && !qry_post_data.Equals(""))
+                     // if post or put is selected and Request Body is not empty, set content 
+                     if ((qry_http_verb.Equals("post") || qry_http_verb.Equals("put")) && !qry_post_data.Equals(""))
                      {
                        request.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(qry_post_data));
                      }
@@ -249,7 +252,7 @@ namespace app
                      {
                        string result = await content.ReadAsStringAsync();
 
-                       context.Response.HttpContext.Session.SetString("responseStatusCode", response.StatusCode.ToString());
+                       context.Response.HttpContext.Session.SetString("responseStatusCode", (int) response.StatusCode + " - " + response.StatusCode.ToString());
                        context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
 
                        if (result != null &&
@@ -265,7 +268,6 @@ namespace app
                    }
 
                    context.Response.Redirect("/");
-
                    return;
                  });
 

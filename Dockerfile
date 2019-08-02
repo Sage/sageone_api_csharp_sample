@@ -5,5 +5,5 @@ WORKDIR /application
 COPY *.sln .
 COPY app/*.csproj ./app/
 WORKDIR /application/app
-RUN dotnet clean
+# RUN dotnet clean
 RUN dotnet restore
