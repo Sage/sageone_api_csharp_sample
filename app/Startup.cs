@@ -37,9 +37,9 @@ namespace app
     public void ConfigureServices(IServiceCollection services)
     {
 
-      String config_client_id = "";
-      String config_client_secret = "";
-      String config_calback_url = "";
+      String config_client_id = "initial";
+      String config_client_secret = "initial";
+      String config_calback_url = "initial";
 
       if (!(getPathOfConfigFile().Equals("")))
         using (StreamReader file = File.OpenText(getPathOfConfigFile()))
@@ -50,6 +50,7 @@ namespace app
           config_client_secret = (string)configObj["config"]["client_secret"];
           config_calback_url = (string)configObj["config"]["callback_url"];
         }
+
 
       services.AddDistributedMemoryCache();
       services.AddSession(options =>
@@ -425,13 +426,16 @@ namespace app
 
       if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
       {
+        Console.WriteLine("use config client_application.json");
         return Path.Combine(Directory.GetCurrentDirectory(), "client_application.json");
       }
       else if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json")))
       {
+        Console.WriteLine("use config app/client_application.json");
         return Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json");
       }
 
+      Console.WriteLine("no client_application.json found, please create one from template.");
       return "";
     }
   }
