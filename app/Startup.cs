@@ -41,14 +41,15 @@ namespace app
       String config_client_secret = "";
       String config_calback_url = "";
 
-      using (StreamReader file = File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
-      using (JsonTextReader reader = new JsonTextReader(file))
-      {
-        JObject configObj = (JObject)JToken.ReadFrom(reader);
-        config_client_id = (string)configObj["config"]["client_id"];
-        config_client_secret = (string)configObj["config"]["client_secret"];
-        config_calback_url = (string)configObj["config"]["callback_url"];
-      }
+      if (!(getPathOfConfigFile().Equals("")))
+        using (StreamReader file = File.OpenText(getPathOfConfigFile()))
+        using (JsonTextReader reader = new JsonTextReader(file))
+        {
+          JObject configObj = (JObject)JToken.ReadFrom(reader);
+          config_client_id = (string)configObj["config"]["client_id"];
+          config_client_secret = (string)configObj["config"]["client_secret"];
+          config_calback_url = (string)configObj["config"]["callback_url"];
+        }
 
       services.AddDistributedMemoryCache();
       services.AddSession(options =>
@@ -78,8 +79,19 @@ namespace app
               OnRemoteFailure = HandleOnRemoteFailure,
               OnCreatingTicket = async context => //async
                     {
-                      tokenfileWrite(context.AccessToken, context.ExpiresIn.ToString(), context.RefreshToken, context.ExpiresIn.ToString(), context.HttpContext);
-                      return; 
+/* 
+                  Console.WriteLine(">>>>" +  (string)context.TokenResponse.Response["expires_in"]);
+                  Console.WriteLine(">>>>" +  (string)context.TokenResponse.Response["refresh_token_expires_in"]); */
+
+                  int tok_expires_in = (int) context.TokenResponse.Response["expires_in"];
+                  int tok_refresh_token_expires_in = (int) context.TokenResponse.Response["refresh_token_expires_in"];
+
+                      tokenfileWrite(context.AccessToken, 
+                                     calculateUnixtimestampWithOffset(tok_expires_in), 
+                                     context.RefreshToken, 
+                                     calculateUnixtimestampWithOffset(tok_refresh_token_expires_in), 
+                                     context.HttpContext);
+                      return;
                     }
             };
           });
@@ -115,7 +127,7 @@ namespace app
            signinApp.Run(async context =>
                  {
                    await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
-                   
+
                    return;
                  });
 
@@ -170,28 +182,27 @@ namespace app
 
                 JObject payload = JObject.Parse((string)await refreshResponse.Content.ReadAsStringAsync());
 
-                Console.WriteLine("json: " + payload.ToString());
-
-                Console.WriteLine("");
-                // Persist the new acess token
+                int tok_expires_in = Int32.Parse((string)payload["expires_in"]);
+                int tok_refresh_token_expires_in = Int32.Parse((string)payload["refresh_token_expires_in"]);
+                
+                // Persist the new acess token to the properties-object
                 authProperties.UpdateTokenValue("access_token", (string)payload["access_token"]);
-                refreshToken = (string)payload["refresh_token"];
-                if (!string.IsNullOrEmpty(refreshToken))
-                {
-                  authProperties.UpdateTokenValue("refresh_token", refreshToken);
-                }
+                authProperties.UpdateTokenValue("refresh_token", (string)payload["refresh_token"]);
+
                 if (payload.TryGetValue("expires_in", out var property))
                 {
                   int seconds = (int)payload["expires_in"];
                   var expiresAt = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(seconds);
                   authProperties.UpdateTokenValue("expires_at", expiresAt.ToString("o", CultureInfo.InvariantCulture));
                 }
+
                 await context.SignInAsync(user, authProperties);
 
+                // write new tokens and times to file
                 tokenfileWrite(await context.GetTokenAsync("access_token"),
-                                await context.GetTokenAsync("expires_at"),
+                                calculateUnixtimestampWithOffset(tok_expires_in),
                                 await context.GetTokenAsync("refresh_token"),
-                                await context.GetTokenAsync("expires_at"),
+                                calculateUnixtimestampWithOffset(tok_refresh_token_expires_in),
                                 context);
 
                 context.Response.Redirect("/");
@@ -209,10 +220,10 @@ namespace app
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
 
                    Console.WriteLine("/query_api -> " + qry_http_verb + " -> " + qry_resource + " -> " + qry_post_data);
-                   
+
                    System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
                    timer.Start();
-                   
+
                    using (HttpClient client = new HttpClient())
                    {
                      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
@@ -253,10 +264,10 @@ namespace app
                      {
                        string result = await content.ReadAsStringAsync();
 
-                       context.Response.HttpContext.Session.SetString("responseStatusCode", (int) response.StatusCode + " - " + response.StatusCode.ToString());
+                       context.Response.HttpContext.Session.SetString("responseStatusCode", (int)response.StatusCode + " - " + response.StatusCode.ToString());
                        context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
 
-                      timer.Stop();
+                       timer.Stop();
                        if (result != null &&
                                  result.Length >= 50)
                        {
@@ -279,15 +290,15 @@ namespace app
                  {
                    tokenfileRead(context);
 
-                    // Setting DefaultAuthenticateScheme causes User to be set
-                    var user = context.User;
+                   // Setting DefaultAuthenticateScheme causes User to be set
+                   var user = context.User;
 
-                    // Deny anonymous request beyond this point.
-                    if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
+                   // Deny anonymous request beyond this point.
+                   if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
                    {
-                      // This is what [Authorize] calls
-                      // The cookie middleware will handle this and redirect to /login
-                      await context.ChallengeAsync();
+                     // This is what [Authorize] calls
+                     // The cookie middleware will handle this and redirect to /login
+                     await context.ChallengeAsync();
 
                      return;
                    }
@@ -354,7 +365,7 @@ namespace app
       return Task.FromResult<OAuthOptions>(context.RequestServices.GetRequiredService<IOptionsMonitor<OAuthOptions>>().Get(currentAuthType));
     }
 
-    public string tokenfileWrite(string access_token, string expires_at, string refresh_token, string refresh_token_expires_at, HttpContext context)
+    public string tokenfileWrite(string access_token, long expires_at, string refresh_token, long refresh_token_expires_at, HttpContext context)
     {
       Console.WriteLine("refresh expires: " + refresh_token_expires_at);
       JObject newContent = new JObject(
@@ -367,9 +378,9 @@ namespace app
       File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json"), newContent.ToString());
 
       context.Request.HttpContext.Session.SetString("access_token", access_token);
-      context.Request.HttpContext.Session.SetString("expires_at", expires_at);
+      context.Request.HttpContext.Session.SetString("expires_at", expires_at.ToString());
       context.Request.HttpContext.Session.SetString("refresh_token", refresh_token);
-      context.Request.HttpContext.Session.SetString("refresh_token_expires_at", refresh_token_expires_at);
+      context.Request.HttpContext.Session.SetString("refresh_token_expires_at", refresh_token_expires_at.ToString());
 
       return "0";
     }
@@ -400,6 +411,28 @@ namespace app
 
       }
       return contentFromFile;
+    }
+
+    public static long calculateUnixtimestampWithOffset(int offset = 0)
+    {
+      long seconds = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds + offset;
+
+      return seconds;
+    }
+
+    public static String getPathOfConfigFile()
+    {
+
+      if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
+      {
+        return Path.Combine(Directory.GetCurrentDirectory(), "client_application.json");
+      }
+      else if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json")))
+      {
+        return Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json");
+      }
+
+      return "";
     }
   }
 }

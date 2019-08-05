@@ -30,14 +30,15 @@ namespace app.Controllers
 
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
 
-      if (this.configFileExist())
-      {
-        model.clientApplicationConfigNotFound = "0";
+      if (Startup.getPathOfConfigFile().Equals(""))
+      { 
+          // show warning on Req.cshtml
+         model.clientApplicationConfigNotFound = "1";
       }
       else
       { 
-        // show warning on Req.cshtml
-        model.clientApplicationConfigNotFound = "1";
+
+        model.clientApplicationConfigNotFound = "0";
       }
 
 
@@ -102,15 +103,6 @@ namespace app.Controllers
           context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["refresh_token_expires_at"]);
         }
       }
-    }
-    public bool configFileExist()
-    {
-      if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
-      {
-        return true;
-      }
-
-      return false;
     }
   }
 }
