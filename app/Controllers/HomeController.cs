@@ -20,11 +20,8 @@ namespace app.Controllers
     ContentModel model = new ContentModel();
 
 
-    public IActionResult Index()
-  
+    public IActionResult Index() 
     {
-      Console.WriteLine("index controller");
-
       // if access_token.json exists load it and set view settings
       this.tokenfileRead(HttpContext);
 
@@ -37,10 +34,8 @@ namespace app.Controllers
       }
       else
       { 
-
         model.clientApplicationConfigNotFound = "0";
       }
-
 
       var readValue = new Byte[1024];   
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out readValue))
@@ -85,7 +80,7 @@ namespace app.Controllers
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
-    { Console.WriteLine("Error!!!!!");
+    { 
       return View(model);
     }
 

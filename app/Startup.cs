@@ -32,6 +32,8 @@ namespace app
 
     public IConfiguration Configuration { get; }
     const string API_URL = "https://api.accounting.sage.com/v3.1/";
+    const string AUTHORIZATION_ENDPOINT= "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
+    const string TOKEN_ENDPOINT = "https://oauth.accounting.sage.com/token";
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -51,7 +53,6 @@ namespace app
           config_calback_url = (string)configObj["config"]["callback_url"];
         }
 
-
       services.AddDistributedMemoryCache();
       services.AddSession(options =>
       {
@@ -70,8 +71,8 @@ namespace app
             o.ClientId = config_client_id;
             o.ClientSecret = config_client_secret;
             o.CallbackPath = new PathString("/auth/callback");
-            o.AuthorizationEndpoint = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
-            o.TokenEndpoint = "https://oauth.accounting.sage.com/token";
+            o.AuthorizationEndpoint = AUTHORIZATION_ENDPOINT;
+            o.TokenEndpoint = TOKEN_ENDPOINT;
             o.SaveTokens = true;
 
             o.Scope.Add("full_access");
@@ -79,21 +80,17 @@ namespace app
             {
               OnRemoteFailure = HandleOnRemoteFailure,
               OnCreatingTicket = async context => //async
-                    {
-/* 
-                  Console.WriteLine(">>>>" +  (string)context.TokenResponse.Response["expires_in"]);
-                  Console.WriteLine(">>>>" +  (string)context.TokenResponse.Response["refresh_token_expires_in"]); */
+              {
+                int tok_expires_in = (int)context.TokenResponse.Response["expires_in"];
+                int tok_refresh_token_expires_in = (int)context.TokenResponse.Response["refresh_token_expires_in"];
 
-                  int tok_expires_in = (int) context.TokenResponse.Response["expires_in"];
-                  int tok_refresh_token_expires_in = (int) context.TokenResponse.Response["refresh_token_expires_in"];
-
-                      tokenfileWrite(context.AccessToken, 
-                                     calculateUnixtimestampWithOffset(tok_expires_in), 
-                                     context.RefreshToken, 
-                                     calculateUnixtimestampWithOffset(tok_refresh_token_expires_in), 
-                                     context.HttpContext);
-                      return;
-                    }
+                tokenfileWrite(context.AccessToken,
+                                calculateUnixtimestampWithOffset(tok_expires_in),
+                                context.RefreshToken,
+                                calculateUnixtimestampWithOffset(tok_refresh_token_expires_in),
+                                context.HttpContext);
+                return;
+              }
             };
           });
     }
@@ -101,7 +98,6 @@ namespace app
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -118,19 +114,19 @@ namespace app
       app.UseMvc(routes =>
       {
         routes.MapRoute(
-                  name: "default",
-                  template: "{controller=Home}/{action=Index}/{id?}");
+          name: "default",
+          template: "{controller=Home}/{action=Index}/{id?}");
       });
 
       // get access token
       app.Map("/login", signinApp =>
          {
-           signinApp.Run(async context =>
-                 {
-                   await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
+            signinApp.Run(async context =>
+            {
+              await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
 
-                   return;
-                 });
+              return;
+            });
 
          });
 
@@ -185,7 +181,7 @@ namespace app
 
                 int tok_expires_in = Int32.Parse((string)payload["expires_in"]);
                 int tok_refresh_token_expires_in = Int32.Parse((string)payload["refresh_token_expires_in"]);
-                
+
                 // Persist the new acess token to the properties-object
                 authProperties.UpdateTokenValue("access_token", (string)payload["access_token"]);
                 authProperties.UpdateTokenValue("refresh_token", (string)payload["refresh_token"]);
@@ -219,8 +215,6 @@ namespace app
                    String qry_http_verb = context.Request.Query["http_verb"].ToString() ?? "";
                    String qry_resource = context.Request.Query["resource"].ToString() ?? "";
                    String qry_post_data = context.Request.Query["post_data"].ToString() ?? "";
-
-                   Console.WriteLine("/query_api -> " + qry_http_verb + " -> " + qry_resource + " -> " + qry_post_data);
 
                    System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
                    timer.Start();
@@ -288,56 +282,55 @@ namespace app
          });
 
       app.Run(async context =>
-                 {
-                   tokenfileRead(context);
+      {
+        tokenfileRead(context);
 
-                   // Setting DefaultAuthenticateScheme causes User to be set
-                   var user = context.User;
+        // Setting DefaultAuthenticateScheme causes User to be set
+        var user = context.User;
 
-                   // Deny anonymous request beyond this point.
-                   if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
-                   {
-                     // This is what [Authorize] calls
-                     // The cookie middleware will handle this and redirect to /login
-                     await context.ChallengeAsync();
+        // Deny anonymous request beyond this point.
+        if (user == null || !user.Identities.Any(identity => identity.IsAuthenticated))
+        {
+          // This is what [Authorize] calls
+          // The cookie middleware will handle this and redirect to /login
+          await context.ChallengeAsync();
 
-                     return;
-                   }
+          return;
+        }
 
-                 });
-
+      });
 
       // Sign-out to remove the user cookie.
       app.Map("/logout", signoutApp =>
       {
         signoutApp.Run(async context =>
-              {
-                var response = context.Response;
-                response.ContentType = "text/html";
-                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await response.WriteAsync("<html><body>");
-                await response.WriteAsync("You have been logged out. Goodbye " + context.User.Identity.Name + "<br>");
-                await response.WriteAsync("<a href=\"/\">Home</a>");
-                await response.WriteAsync("</body></html>");
-              });
+        {
+          var response = context.Response;
+          response.ContentType = "text/html";
+          await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+          await response.WriteAsync("<html><body>");
+          await response.WriteAsync("You have been logged out. Goodbye " + context.User.Identity.Name + "<br>");
+          await response.WriteAsync("<a href=\"/\">Home</a>");
+          await response.WriteAsync("</body></html>");
+        });
       });
 
       // Display the remote error
       app.Map("/error", errorApp =>
       {
         errorApp.Run(async context =>
-              {
-                var response = context.Response;
-                response.ContentType = "text/html";
-                await response.WriteAsync("<html><body>");
-                await response.WriteAsync("An remote failure has occurred: " + context.Request.Query["FailureMessage"] + "<br>");
-                await response.WriteAsync("<a href=\"/\">Home</a>");
-                await response.WriteAsync("</body></html>");
-              });
+        {
+          var response = context.Response;
+          response.ContentType = "text/html";
+          await response.WriteAsync("<html><body>");
+          await response.WriteAsync("An remote failure has occurred: " + context.Request.Query["FailureMessage"] + "<br>");
+          await response.WriteAsync("<a href=\"/\">Home</a>");
+          await response.WriteAsync("</body></html>");
+        });
       });
     }
 
-    // helper
+    #region helper
     private async Task HandleOnRemoteFailure(RemoteFailureContext context)
     {
       context.Response.StatusCode = 500;
@@ -368,7 +361,6 @@ namespace app
 
     public string tokenfileWrite(string access_token, long expires_at, string refresh_token, long refresh_token_expires_at, HttpContext context)
     {
-      Console.WriteLine("refresh expires: " + refresh_token_expires_at);
       JObject newContent = new JObject(
         new JProperty("access_token", access_token),
         new JProperty("expires_at", expires_at),
@@ -426,17 +418,15 @@ namespace app
 
       if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "client_application.json")))
       {
-        Console.WriteLine("use config client_application.json");
         return Path.Combine(Directory.GetCurrentDirectory(), "client_application.json");
       }
       else if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json")))
       {
-        Console.WriteLine("use config app/client_application.json");
         return Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json");
       }
-
-      Console.WriteLine("no client_application.json found, please create one from template.");
+      
       return "";
     }
   }
+  #endregion
 }
