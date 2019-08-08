@@ -39,7 +39,7 @@ namespace app.Controllers
 
       var readValue = new Byte[1024];   
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out readValue))
-        HttpContext.Session.SetString("reqEndpoint", "user");
+        HttpContext.Session.SetString("reqEndpoint", "contacts");
 
 
       if (!HttpContext.Session.TryGetValue("access_token", out readValue))
