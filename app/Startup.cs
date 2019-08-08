@@ -32,7 +32,7 @@ namespace app
 
     public IConfiguration Configuration { get; }
     const string API_URL = "https://api.accounting.sage.com/v3.1/";
-    const string AUTHORIZATION_ENDPOINT= "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
+    const string AUTHORIZATION_ENDPOINT = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
     const string TOKEN_ENDPOINT = "https://oauth.accounting.sage.com/token";
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -121,12 +121,12 @@ namespace app
       // get access token
       app.Map("/login", signinApp =>
          {
-            signinApp.Run(async context =>
-            {
-              await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
+           signinApp.Run(async context =>
+           {
+             await context.ChallengeAsync("oauth2", new AuthenticationProperties() { RedirectUri = "/" });
 
-              return;
-            });
+             return;
+           });
 
          });
 
@@ -221,58 +221,41 @@ namespace app
 
                    using (HttpClient client = new HttpClient())
                    {
+
                      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Response.HttpContext.Session.GetString("access_token"));
                      client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                     HttpRequestMessage request;
+                     HttpResponseMessage request = null;
 
-                     switch (qry_http_verb)
+                     if (qry_http_verb.Equals("get"))
                      {
-                       case "get":
-                         request = new HttpRequestMessage(HttpMethod.Get, API_URL + qry_resource);
-                         break;
-                       case "post":
-                         request = new HttpRequestMessage(HttpMethod.Post, API_URL + qry_resource);
-                         break;
-                       case "put":
-                         request = new HttpRequestMessage(HttpMethod.Put, API_URL + qry_resource);
-                         break;
-                       case "delete":
-                         request = new HttpRequestMessage(HttpMethod.Delete, API_URL + qry_resource);
-                         break;
-                       default:
-                         request = new HttpRequestMessage(HttpMethod.Get, API_URL + qry_resource);
-                         break;
+                       request = await client.GetAsync(API_URL + qry_resource);
                      }
-
-                     // if post or put is selected and Request Body is not empty, set content 
-                     if ((qry_http_verb.Equals("post") || qry_http_verb.Equals("put")) && !qry_post_data.Equals(""))
+                     else if (qry_http_verb.Equals("post"))
                      {
-                       request.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(qry_post_data));
+                       request = await client.PostAsync(API_URL + qry_resource, new StringContent(qry_post_data, Encoding.UTF8, "application/json"));
                      }
-
-                     Task<HttpResponseMessage> responseMsgAsync = client.SendAsync(request);
-                     Task.WaitAll(responseMsgAsync);
-
-                     HttpResponseMessage response = responseMsgAsync.Result;
-                     using (HttpContent content = response.Content)
+                     else if (qry_http_verb.Equals("put"))
                      {
-                       string result = await content.ReadAsStringAsync();
-
-                       context.Response.HttpContext.Session.SetString("responseStatusCode", (int)response.StatusCode + " - " + response.StatusCode.ToString());
-                       context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
-
-                       timer.Stop();
-                       if (result != null &&
-                                 result.Length >= 50)
-                       {
-                         // prettify json
-                         dynamic parsedJson = JsonConvert.DeserializeObject(result.ToString());
-                         String responseContentPretty = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-                         context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
-                         context.Response.HttpContext.Session.SetString("responseTimespan", timer.Elapsed.Seconds + "." + timer.Elapsed.Milliseconds);
-                       }
+                       request = await client.PutAsync(API_URL + qry_resource, new StringContent(qry_post_data, Encoding.UTF8, "application/json"));
                      }
+                     else if (qry_http_verb.Equals("delete"))
+                     {
+                       request = await client.DeleteAsync(API_URL + qry_resource);
+                     }
+                     
+                     Task<string> respContent = request.Content.ReadAsStringAsync();
+                     Task.WaitAll(respContent);
+
+                     dynamic parsedJson = JsonConvert.DeserializeObject(respContent.Result.ToString());
+                     String responseContentPretty = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+
+                     context.Response.HttpContext.Session.SetString("responseStatusCode", (int)request.StatusCode + " - " + request.StatusCode.ToString());
+                     context.Response.HttpContext.Session.SetString("reqEndpoint", qry_resource);
+
+                     context.Response.HttpContext.Session.SetString("responseContent", responseContentPretty);
+                     context.Response.HttpContext.Session.SetString("responseTimespan", timer.Elapsed.Seconds + "." + timer.Elapsed.Milliseconds);
+
                    }
 
                    context.Response.Redirect("/");
@@ -424,7 +407,7 @@ namespace app
       {
         return Path.Combine(Directory.GetCurrentDirectory(), "app/client_application.json");
       }
-      
+
       return "";
     }
   }
