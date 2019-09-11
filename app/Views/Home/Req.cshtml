@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNetCore.Http
+@model app.Models.ContentModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Request";
+}
+
+@if (Model.partialAccessTokenAvailable == "1" && Model.clientApplicationConfigNotFound == "0") {
+
+<form id="request" class="request" action="/query_api" method="get">
+
+   <div class="field">
+    <label class="field__label">Access Token</label>
+    <p id="timer" class="field__help">...</p>
+    <div class="field__body">
+      <input class="field__input" value="@HttpContextAccessor.HttpContext.Session.GetString("access_token")" required readonly />
+      <a class="button" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/refresh_token/">Refresh Token</a>
+    </div>
+  </div> 
+
+  <script>
+    // Token expiry timer
+    (function() {
+      var timer = document.querySelector('#timer');
+      var input = timer.closest('.field').querySelector('.field__input');
+      var refresh = timer.closest('.field').querySelector('.button');
+      var expires = new Date();
+          expires.setSeconds(expires.getSeconds() + 300);
+
+      function updateSeconds() {
+        var now = Date.now();
+
+        if (expires > now) {
+          timer.innerHTML = 'Expires in <strong>' + Math.round((expires - now) / 1000) + '</strong> seconds';
+          timer.classList.remove('is-error');
+          input.classList.remove('is-invalid');
+          refresh.classList.remove('is-destructive');
+        }
+        else {
+          timer.innerHTML = 'Expired <strong>' + Math.round((now - expires) / 1000) + '</strong> seconds ago';
+          timer.classList.add('is-error');
+          input.classList.add('is-invalid');
+          refresh.classList.add('is-destructive');
+        }
+      }
+      
+      updateSeconds();
+
+      setInterval(updateSeconds, 1000);
+    }());
+  </script>
+
+  <div class="field">
+    <label class="field__label" for="http_verb">Request Method</label>
+    <div class="field__body">
+      <select class="field__input" id="http_verb" name="http_verb">
+        <option value="get">GET</option>
+        <option value="post">POST</option>
+        <option value="put">PUT</option>
+        <option value="delete">DELETE</option>
+      </select>
+    </div>
+  </div>
+
+   <div class="field">
+    <label class="field__label" for="resource">Request Endpoint</label>
+    <p class="field__help">
+      https://api.accounting.sage.com/v3.1/<strong>&lt;Resource&gt;</strong>
+    </p>
+    <div class="field__body">
+      <input class="field__input" list="resources" value="@HttpContextAccessor.HttpContext.Session.GetString("reqEndpoint")" id="resource" name="resource" required/>
+      <datalist id="resources">
+        <option>contacts</option>
+        <option>oranges</option>
+      </datalist>
+    </div>
+  </div> 
+
+  <div class="field">
+    <label class="field__label" for="post_data">Request Body</label>
+    <p class="field__help">
+      Example: {"contact": { "contact_type_ids": ["CUSTOMER"], "name": "Joe Bloggs"}}
+    </p>
+    <div class="field__body">
+      <textarea class="field__input" id="post_data" name="post_data"></textarea>
+    </div>
+  </div>
+    <button class="button">Make Request</button>
+
+</form>
+
+
+  }
+  else if (Model.partialAccessTokenAvailable == "0" && Model.partialResposeIsAvailable == "0" && Model.clientApplicationConfigNotFound == "0") {
+
+    <a class="button is-centered" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login">Authorize API access</a>
+
+  }
+  else if (Model.clientApplicationConfigNotFound == "1" && Model.partialAccessTokenAvailable == "0" && Model.partialResposeIsAvailable == "0") {
+  <div class="error">
+    <h3>There was a problem loading client_application.json</h3>
+    <p>Before you can start, you need to prepare a config file, which contains information
+      about your registered client application.</p>
+    <p>Follow these steps to get this sample application running:</p>
+    <ul>
+      <li>Make a copy of the file <span class="pre">config/client_application.template.json</span> and
+        name it <span class="pre">config/client_application.json</span>.</li>
+      <li>Go to the Sage Developer Self Service at
+        <a href="https://developerselfservice.sageone.com/">https://developerselfservice.sageone.com/</a>
+        and sign up or sign in.</li>
+      <li>Create a new application (app) and copy the values for Client ID and Client Secret
+        into the fields in <span class="pre">client_config.json</span>.</li>
+      <li>Depending on the way you run the sample app (Docker environment, local Apache,
+        etc.) adjust the hostname/port of the callback URL below. Add the same callback URL
+        to your client application in the Sage Developer Self Service.</li>
+    </ul>
+</div>
+  }

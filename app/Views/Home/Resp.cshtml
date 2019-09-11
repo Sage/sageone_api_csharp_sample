@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Http
+@using app.Models
+@model ContentModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Response";
+}
+
+@if (Model.partialAccessTokenAvailable == "1" && Model.partialResposeIsAvailable == "1" && Model.clientApplicationConfigNotFound == "0") {
+
+<div id="response" class="response">
+  <div class="field">
+    <label class="field__label">Response Status</label>
+    <p class="field__help">
+      Returned in <strong>@HttpContextAccessor.HttpContext.Session.GetString("responseTimespan")</strong> seconds 
+    </p>
+    <div class="field__body">
+      <input class="field__input" readonly value="@HttpContextAccessor.HttpContext.Session.GetString("responseStatusCode")" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field__label">Response Body</label>
+    <div class="field__body">
+      <textarea class="field__input response__body" readonly>@HttpContextAccessor.HttpContext.Session.GetString("responseContent")</textarea>
+    </div>
+  </div>
+</div>
+}

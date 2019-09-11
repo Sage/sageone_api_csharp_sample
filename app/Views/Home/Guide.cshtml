@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http
+@model app.Models.ContentModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Guide";
+}
+<div id="guide" class="guide">
+    <h1 class="title">Let's get started</h1>
+
+    <ol class="steps">
+        <li class="step">
+            <h2 class="step__title">
+                <a href="https://developerselfservice.sageone.com/" target="_blank">Sign up for a Sage developer account</a>
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                Create a client application
+            </h2>
+            <div class="step__body">
+                Enter the following as the callback URL:<br />
+                <code>@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/auth/callback</code>
+            </div>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                Copy the Client Id and Client Secret into:
+            </h2>
+            <div class="step__body">
+                <code>app/client_application.json</code>
+            </div>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                <a href="https://developer.sage.com/api/accounting/guides/faq/" target="_blank">Sign up for a free product trial</a>
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                <a href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/login">Authorize API access</a><br />
+            </h2>
+        </li>
+        <li class="step">
+            <h2 class="step__title">
+                Make your first API call
+            </h2>
+        </li>
+    </ol>
+</div>

@@ -1,1 +1,17 @@
 .DS_Store
+
+# Created by https://www.gitignore.io/api/dotnetcore
+# Edit at https://www.gitignore.io/?templates=dotnetcore
+
+### DotnetCore ###
+# .NET Core build folders
+/app/bin/
+/app/obj/
+/app/out/
+
+# exclude the used client config file
+/app/client_application.json
+/app/access_token.json
+
+# exclude visual studio settings folder
+.vs
