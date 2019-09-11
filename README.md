@@ -1,6 +1,6 @@
 # Sage Business Cloud Accounting API Sample application (C#)
 
-Sample C# project that integrates with Sage Accounting via the Sage Accounting API. This Application uses .NET Core 2.2 and Newtonsoft Json.NET.
+Sample C# project that integrates with Sage Accounting via the Sage Accounting API. This Application uses .NET Core 2.2 and [Newtonsoft Json.NET](https://github.com/JamesNK/Newtonsoft.Json).
 
 * Authentication and API calls are handled in [app/Startup.cs](app/Startup.cs)
 
