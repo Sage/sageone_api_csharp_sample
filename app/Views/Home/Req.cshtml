@@ -16,16 +16,15 @@
       <input class="field__input" value="@HttpContextAccessor.HttpContext.Session.GetString("access_token")" required readonly />
       <a class="button" href="@HttpContextAccessor.HttpContext.Session.GetString("BaseUrl")/refresh_token/">Refresh Token</a>
     </div>
-  </div> 
+  </div>
 
   <script>
     // Token expiry timer
     (function() {
+      var expires = "@HttpContextAccessor.HttpContext.Session.GetString("expires_at")" + "000"; // add milliseconds
       var timer = document.querySelector('#timer');
       var input = timer.closest('.field').querySelector('.field__input');
       var refresh = timer.closest('.field').querySelector('.button');
-      var expires = new Date();
-          expires.setSeconds(expires.getSeconds() + 300);
 
       function updateSeconds() {
         var now = Date.now();
@@ -43,7 +42,7 @@
           refresh.classList.add('is-destructive');
         }
       }
-      
+
       updateSeconds();
 
       setInterval(updateSeconds, 1000);
@@ -74,7 +73,7 @@
         <option>oranges</option>
       </datalist>
     </div>
-  </div> 
+  </div>
 
   <div class="field">
     <label class="field__label" for="post_data">Request Body</label>
