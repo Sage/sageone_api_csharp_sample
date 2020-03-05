@@ -64,7 +64,7 @@
    <div class="field">
     <label class="field__label" for="resource">Request Endpoint</label>
     <p class="field__help">
-      https://api.accounting.sage.com/v3.1/<strong>&lt;Resource&gt;</strong>
+      https://pnofxtaoia.execute-api.eu-west-1.amazonaws.com/qa5/<strong>&lt;Resource&gt;</strong>
     </p>
     <div class="field__body">
       <input class="field__input" list="resources" value="@HttpContextAccessor.HttpContext.Session.GetString("reqEndpoint")" id="resource" name="resource" required/>
@@ -105,7 +105,7 @@
       <li>Make a copy of the file <span class="pre">config/client_application.template.json</span> and
         name it <span class="pre">config/client_application.json</span>.</li>
       <li>Go to the Sage Developer Self Service at
-        <a href="https://developerselfservice.sageone.com/">https://developerselfservice.sageone.com/</a>
+        <a href="https://developer-selfservice.app.qa5.dev-sageone.com">https://developer-selfservice.app.qa5.dev-sageone.com</a>
         and sign up or sign in.</li>
       <li>Create a new application (app) and copy the values for Client ID and Client Secret
         into the fields in <span class="pre">client_config.json</span>.</li>

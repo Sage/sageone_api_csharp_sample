@@ -31,9 +31,9 @@ namespace app
     }
 
     public IConfiguration Configuration { get; }
-    const string API_URL = "https://api.accounting.sage.com/v3.1/";
-    const string AUTHORIZATION_ENDPOINT = "https://www.sageone.com/oauth2/auth/central?filter=apiv3.1";
-    const string TOKEN_ENDPOINT = "https://oauth.accounting.sage.com/token";
+    const string API_URL = "https://pnofxtaoia.execute-api.eu-west-1.amazonaws.com/qa5/";
+    const string AUTHORIZATION_ENDPOINT = "https://central.app.qa5.dev-sageone.com/oauth2/auth?filter=apiv3.1";
+    const string TOKEN_ENDPOINT = "https://aws-oauth.service.qa5.dev-sageone.com/token";
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
