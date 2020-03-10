@@ -53,6 +53,12 @@ Start the container:
 ./script/start.sh
 ```
 
+Restart the container:
+
+```
+./script/restart.sh
+```
+
 If you need, stop.sh will stop the container:
 
 ```

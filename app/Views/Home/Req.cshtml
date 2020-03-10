@@ -108,10 +108,12 @@
         <a href="https://developerselfservice.sageone.com/">https://developerselfservice.sageone.com/</a>
         and sign up or sign in.</li>
       <li>Create a new application (app) and copy the values for Client ID and Client Secret
-        into the fields in <span class="pre">client_config.json</span>.</li>
+        into the fields in <span class="pre">client_application.json</span>.</li>
       <li>Depending on the way you run the sample app (Docker environment, local Apache,
         etc.) adjust the hostname/port of the callback URL below. Add the same callback URL
         to your client application in the Sage Developer Self Service.</li>
+      <li>You will then need to restart the application in order to use the updated 
+        credentials and callback URL in config/client_application.json</li>
     </ul>
 </div>
   }
