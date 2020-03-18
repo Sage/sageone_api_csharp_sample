@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -61,9 +62,8 @@ namespace app
         options.IdleTimeout = TimeSpan.FromHours(1);
       });
 
-      services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+      services.AddRazorPages();
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
           .AddCookie(o => o.LoginPath = new PathString("/login"))
           .AddOAuth("oauth2", "Sage Accounting", o =>
@@ -81,8 +81,8 @@ namespace app
               OnRemoteFailure = HandleOnRemoteFailure,
               OnCreatingTicket = async context => //async
               {
-                int tok_expires_in = (int)context.TokenResponse.Response["expires_in"];
-                int tok_refresh_token_expires_in = (int)context.TokenResponse.Response["refresh_token_expires_in"];
+                  int tok_expires_in = 3; //(int) context.TokenResponse.Response["expires_in"];
+                  int tok_refresh_token_expires_in = 5; //(int) context.TokenResponse.Response["refresh_token_expires_in"];
 
                 tokenfileWrite(context.AccessToken,
                                 calculateUnixtimestampWithOffset(tok_expires_in),
@@ -96,7 +96,7 @@ namespace app
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -107,16 +107,13 @@ namespace app
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
       }
+      app.UseRouting();
       app.UseStaticFiles();
       app.UseSession();
       app.UseCookiePolicy();
       app.UseAuthentication();
-      app.UseMvc(routes =>
-      {
-        routes.MapRoute(
-          name: "default",
-          template: "{controller=Home}/{action=Index}/{id?}");
-      });
+      app.UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}"));
+
 
       // get access token
       app.Map("/login", signinApp =>
@@ -243,7 +240,7 @@ namespace app
                      {
                        request = await client.DeleteAsync(API_URL + qry_resource);
                      }
-                     
+
                      Task<string> respContent = request.Content.ReadAsStringAsync();
                      Task.WaitAll(respContent);
 
