@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Net;
+using System.Text.Json;
 using app.Models;
 
 namespace app.Controllers
@@ -19,8 +11,7 @@ namespace app.Controllers
   {
     ContentModel model = new ContentModel();
 
-
-    public IActionResult Index() 
+    public IActionResult Index()
     {
       // if access_token.json exists load it and set view settings
       this.tokenfileRead(HttpContext);
@@ -28,16 +19,16 @@ namespace app.Controllers
       HttpContext.Session.SetString("BaseUrl", "http://" + HttpContext.Request.Host);
 
       if (Startup.getPathOfConfigFile().Equals(""))
-      { 
+      {
           // show warning on Req.cshtml
          model.clientApplicationConfigNotFound = "1";
       }
       else
-      { 
+      {
         model.clientApplicationConfigNotFound = "0";
       }
 
-      var readValue = new Byte[1024];   
+      var readValue = new Byte[1024];
       if (!HttpContext.Session.TryGetValue("reqEndpoint", out readValue))
         HttpContext.Session.SetString("reqEndpoint", "contacts");
 
@@ -61,7 +52,7 @@ namespace app.Controllers
       }
 
       return View(model);
-    } 
+    }
 
     public IActionResult Guide()
     {
@@ -80,7 +71,7 @@ namespace app.Controllers
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
-    { 
+    {
       return View(model);
     }
 
@@ -88,15 +79,13 @@ namespace app.Controllers
     {
       if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
       {
-        using (StreamReader file = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json")))
-        using (JsonTextReader reader = new JsonTextReader(file))
-        {
-          JObject jsonObj = (JObject)JToken.ReadFrom(reader);
-          context.Request.HttpContext.Session.SetString("access_token", (string)jsonObj["access_token"]);
-          context.Request.HttpContext.Session.SetString("expires_at", (string)jsonObj["expires_at"]);
-          context.Request.HttpContext.Session.SetString("refresh_token", (string)jsonObj["refresh_token"]);
-          context.Request.HttpContext.Session.SetString("refresh_token_expires_at", (string)jsonObj["refresh_token_expires_at"]);
-        }
+        String fs = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "access_token.json"));
+
+        var content = JsonSerializer.Deserialize<JsonAccessTokenFile>(fs);
+        context.Request.HttpContext.Session.SetString("access_token", content.access_token);
+        context.Request.HttpContext.Session.SetString("expires_at", content.expires_at.ToString());
+        context.Request.HttpContext.Session.SetString("refresh_token", content.refresh_token);
+        context.Request.HttpContext.Session.SetString("refresh_token_expires_at", content.refresh_token_expires_at.ToString());
       }
     }
   }
