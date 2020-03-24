@@ -1,4 +1,4 @@
-# Sage Business Cloud Accounting API Sample application (C#)
+# Sage Business Cloud Accounting API Sample application (C#) [![Travis Status](https://travis-ci.org/Sage/sageone_api_csharp_sample.svg?branch=master)](https://travis-ci.org/github/Sage/sageone_api_csharp_sample)
 
 Sample C# project that integrates with Sage Accounting via the Sage Accounting API. This Application uses .NET Core 2.2 and [Newtonsoft Json.NET](https://github.com/JamesNK/Newtonsoft.Json).
 
