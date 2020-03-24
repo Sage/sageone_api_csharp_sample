@@ -1,8 +1,5 @@
 language: csharp
-solution: app.sln
 mono: none
-dotnet: 2.2.401
 script:
- - dotnet restore
- - dotnet build
- - dotnet run
+ - ./script/setup.sh
+ - ./script/build.sh
